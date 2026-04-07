@@ -1,0 +1,129 @@
+html {
+    background: transparent;
+}
+
+body.nutrition-page {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    /* Màu xanh biển hiển thị từ ocean-container */
+    display: flex;
+    /* Dùng Flexbox */
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    overflow: hidden;
+    position: relative;
+}
+
+.nutrition-container {
+    position: relative;
+    width: 90%;
+    /* Chiếm 90% chiều rộng màn hình */
+    max-width: 1200px;
+    /* Nhưng không quá 1200px để tránh bị vỡ ảnh */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    z-index: 1;
+}
+
+.main-island-img {
+    width: 100%;
+    /* Ảnh tự giãn nở theo container */
+    height: auto;
+    display: block;
+    /* Nếu ảnh của bạn có nền trắng, hãy dùng lệnh dưới đây để tạm thời làm mượt: */
+    border-radius: 20px;
+    box-shadow: none;
+}
+
+.main-island-img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Định dạng chung cho các vùng bấm */
+.hotspot {
+    position: absolute;
+    /* background: rgba(255, 0, 0, 0.2);  Bỏ comment dòng này để thấy vùng bấm khi đang căn chỉnh */
+    cursor: pointer;
+    border-radius: 50%;
+    /* Làm vùng bấm hình tròn/oval cho hợp với đảo */
+    transition: background 0.3s;
+}
+
+.hotspot:hover {
+    background: rgba(255, 255, 255, 0.2);
+    /* Hiệu ứng lóe sáng nhẹ khi di chuột vào */
+}
+
+/* Căn chỉnh vị trí từng nhóm dựa trên hình design */
+.trai-cay {
+    top: 25%;
+    left: 12%;
+    width: 25%;
+    height: 35%;
+}
+
+.rau-cu {
+    top: 25%;
+    right: 10%;
+    width: 25%;
+    height: 40%;
+}
+
+.tinh-bot {
+    bottom: 10%;
+    left: 25%;
+    width: 50%;
+    height: 30%;
+}
+
+.sua {
+    top: 15%;
+    left: 40%;
+    width: 20%;
+    height: 20%;
+}
+
+.dam {
+    top: 45%;
+    left: 45%;
+    width: 10%;
+    height: 10%;
+}
+
+/* --- PHẦN NỀN NƯỚC BIỂN --- */
+.ocean-container {
+    position: fixed;
+    /* Giữ cố định làm nền */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #76cfff 0%, #3ba7e1 100%);
+    z-index: 0;
+    /* Nằm dưới cùng */
+    overflow: hidden;
+}
+
+/* Hiệu ứng lấp lánh trên mặt nước */
+.water-sparkle-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+    opacity: 0.5;
+    animation: waterGlitter 8s infinite alternate;
+    pointer-events: none;
+}
