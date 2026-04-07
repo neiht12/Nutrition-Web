@@ -1,69 +1,54 @@
-html {
-    background: transparent;
-}
-
-body.nutrition-page {
+html,
+body {
     margin: 0;
     padding: 0;
     width: 100vw;
     height: 100vh;
-    background: transparent;
-    /* Màu xanh biển hiển thị từ ocean-container */
-    display: flex;
-    /* Dùng Flexbox */
-    justify-content: center;
-    /* Căn giữa theo chiều ngang */
-    align-items: center;
-    /* Căn giữa theo chiều dọc */
     overflow: hidden;
+}
+
+body.nutrition-page {
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
 }
 
+/* --- KHUNG ĐẢO --- */
 .nutrition-container {
     position: relative;
     width: 90%;
-    /* Chiếm 90% chiều rộng màn hình */
     max-width: 1200px;
-    /* Nhưng không quá 1200px để tránh bị vỡ ảnh */
     display: flex;
     justify-content: center;
     align-items: center;
-    background: transparent;
     z-index: 1;
+    /* Nổi lên trên mặt nước */
 }
 
 .main-island-img {
     width: 100%;
-    /* Ảnh tự giãn nở theo container */
     height: auto;
     display: block;
-    /* Nếu ảnh của bạn có nền trắng, hãy dùng lệnh dưới đây để tạm thời làm mượt: */
-    border-radius: 20px;
-    box-shadow: none;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
+    /* Tạo bóng đổ cho đảo */
 }
 
-.main-island-img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-/* Định dạng chung cho các vùng bấm */
+/* --- VÙNG BẤM (HOTSPOTS) --- */
 .hotspot {
     position: absolute;
-    /* background: rgba(255, 0, 0, 0.2);  Bỏ comment dòng này để thấy vùng bấm khi đang căn chỉnh */
     cursor: pointer;
     border-radius: 50%;
-    /* Làm vùng bấm hình tròn/oval cho hợp với đảo */
     transition: background 0.3s;
+    z-index: 10;
 }
 
 .hotspot:hover {
-    background: rgba(255, 255, 255, 0.2);
-    /* Hiệu ứng lóe sáng nhẹ khi di chuột vào */
+    background: rgba(255, 255, 255, 0.3);
 }
 
-/* Căn chỉnh vị trí từng nhóm dựa trên hình design */
+/* Tọa độ các vùng tương tác */
 .trai-cay {
     top: 25%;
     left: 12%;
@@ -99,31 +84,180 @@ body.nutrition-page {
     height: 10%;
 }
 
-/* --- PHẦN NỀN NƯỚC BIỂN --- */
+/* --- NƯỚC BIỂN --- */
 .ocean-container {
     position: fixed;
-    /* Giữ cố định làm nền */
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     background: linear-gradient(135deg, #76cfff 0%, #3ba7e1 100%);
-    z-index: 0;
-    /* Nằm dưới cùng */
+    z-index: -1;
+    /* Luôn nằm dưới cùng */
     overflow: hidden;
 }
 
-/* Hiệu ứng lấp lánh trên mặt nước */
 .water-sparkle-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 2px, transparent 2px);
+    background-size: 50px 50px;
     opacity: 0.5;
-    animation: waterGlitter 8s infinite alternate;
+    animation: waterGlitter 15s linear infinite;
+    /* Gọi hiệu ứng mặt nước */
     pointer-events: none;
+    /* Tránh click nhầm vào lớp nước */
+}
+
+/* --- HOẠT ẢNH MẶT NƯỚC --- */
+@keyframes waterGlitter {
+    0% {
+        transform: rotate(0deg);
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: rotate(360deg);
+        opacity: 0.3;
+    }
+}
+
+/* --- TIÊU ĐỀ 3D TRÒN TRỊA & CHUYỂN ĐỘNG --- */
+.nutrition-header-text {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
+}
+
+.design-title {
+    /* Sử dụng font chữ đậm và tròn */
+    font-family: 'Segoe UI', 'Arial Rounded MT Bold', sans-serif;
+    font-size: 5rem;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    cursor: default;
+}
+
+.design-title span {
+    display: inline-block;
+    font-weight: 900;
+    /* Kỹ thuật tạo viền trắng TRÒN bao quanh chữ */
+    -webkit-text-stroke: 15px white;
+    paint-order: stroke fill;
+    /* Hiệu ứng đổ bóng 3D làm chữ trông dày và tròn hơn */
+    text-shadow:
+        5px 5px 0px rgba(0, 0, 0, 0.1),
+        0px 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Màu sắc chính xác theo design */
+.word-blue {
+    color: #007bff;
+}
+
+.word-orange {
+    color: #ff5722;
+}
+
+.word-yellow {
+    color: #fbc02d;
+}
+
+/* --- HIỆU ỨNG CHUYỂN ĐỘNG NHÚN NHẢY --- */
+.animate-pop {
+    animation: bubbleWave 3s ease-in-out infinite;
+}
+
+/* Delay để các từ không nhảy cùng lúc, tạo thành một làn sóng */
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+/* Animation nhún nhảy kết hợp xoay nhẹ */
+@keyframes bubbleWave {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-15px) rotate(-2deg) scale(1.05);
+    }
+
+    66% {
+        transform: translateY(5px) rotate(2deg);
+    }
+}
+
+/* Hiệu ứng khi di chuột vào: Chữ sẽ to hẳn lên */
+.design-title span:hover {
+    transform: scale(1.2) !important;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 101;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 1024px) {
+    .design-title {
+        font-size: 3rem;
+    }
+
+    .design-title span {
+        -webkit-text-stroke: 8px white;
+    }
+}
+
+/* --- NÚT QUAY VỀ TRANG CHỦ (KHUNG TRÒN) --- */
+.back-home-btn {
+    position: fixed;
+    /* Giữ cố định ở góc màn hình */
+    top: 30px;
+    left: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    /* Tạo khung tròn */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    z-index: 200;
+    /* Đảm bảo nằm trên cùng */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    /* Đổ bóng nhẹ */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.back-home-btn:hover {
+    transform: scale(1.2);
+    /* Phóng to nhẹ khi di chuột vào */
+    background-color: #f8f9fa;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.arrow-icon {
+    font-size: 32px;
+    color: #0069d9;
+    /* Màu xanh đậm tông xuyệt tông với chữ ĐẢO */
+    font-weight: bold;
+    line-height: 1;
+    margin-top: -4px;
+    /* Căn chỉnh vị trí mũi tên vào giữa tâm tròn */
 }

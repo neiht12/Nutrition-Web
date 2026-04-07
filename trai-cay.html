@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nhóm Trái Cây - Đảo Dinh Dưỡng</title>
+    <link rel="stylesheet" href="nutrition.css">
+    <link rel="stylesheet" href="cards.css">
+</head>
+
+<body class="nutrition-page">
+    <div class="ocean-container">
+        <div class="water-sparkle-overlay"></div>
+    </div>
+    <div class="card-container">
+        <h1>Nhóm Trái Cây</h1>
+        <div id="card-list">
+            <div class="card" onclick="showDetail(this)">
+                <img src="https://via.placeholder.com/100" alt="Táo">
+                <div class="name">Táo</div>
+                <span class="edit-icon" onclick="event.stopPropagation(); editCard(this.parentElement)">✏️</span>
+            </div>
+            <div class="card" onclick="showDetail(this)">
+                <img src="https://via.placeholder.com/100" alt="Cam">
+                <div class="name">Cam</div>
+                <span class="edit-icon" onclick="event.stopPropagation(); editCard(this.parentElement)">✏️</span>
+            </div>
+            <div class="card" onclick="showDetail(this)">
+                <img src="https://via.placeholder.com/100" alt="Chuối">
+                <div class="name">Chuối</div>
+                <span class="edit-icon" onclick="event.stopPropagation(); editCard(this.parentElement)">✏️</span>
+            </div>
+        </div>
+        <a href="dinhduong.html" style="display: block; margin-top: 20px; text-align: center;">Quay lại Đảo Dinh
+            Dưỡng</a>
+    </div>
+    <div id="edit-form" class="edit-form">
+        <h3>Sửa Card</h3>
+        <label for="card-select" style="display: block; margin-bottom: 5px; font-weight: bold;">Chọn card để
+            sửa:</label>
+        <select id="card-select" onchange="selectCardToEdit()"
+            style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ddd;">
+            <option value="">-- Chọn card để sửa --</option>
+        </select>
+        <button onclick="addNewCardFromForm()"
+            style="margin-bottom: 10px; padding: 8px 15px; background: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer; width: 100%;">Thêm
+            Card Mới</button>
+        <input type="text" id="edit-name" placeholder="Tên món ăn" disabled>
+        <input type="file" id="edit-image" accept="image/*" disabled>
+        <textarea id="edit-info" placeholder="Thông tin dinh dưỡng" disabled></textarea>
+        <button onclick="saveEdit()" disabled>Lưu</button>
+        <button onclick="cancelEdit()">Hủy</button>
+    </div>
+    <div id="detail-modal" class="detail-modal">
+        <div class="detail-card">
+            <!-- Nội dung sẽ được điền bởi JS -->
+        </div>
+    </div>
+    <script src="cards.js"></script>
+    <script>
+        // 初始化所有卡片
+        function initializeCards() {
+            const cards = document.querySelectorAll('#card-list .card');
+            cards.forEach((card) => {
+                // 确保每张卡片都有info元素
+                if (!card.querySelector('.info')) {
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'info';
+                    infoDiv.style.display = 'none';
+                    card.appendChild(infoDiv);
+                }
+            });
+            // 更新dropdown列表
+            updateCardSelect();
+        }
+
+        // 当页面加载完成时初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeCards();
+        });
+    </script>
+</body>
+
+</html>
