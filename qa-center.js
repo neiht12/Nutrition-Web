@@ -145,6 +145,12 @@ function applyFilters(searchTerm, category) {
     renderQA();
 }
 
+function refreshCurrentView() {
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    applyFilters(searchInput ? searchInput.value : '', categoryFilter ? categoryFilter.value : '');
+}
+
 // === MODAL OPERATIONS ===
 function openAddQAModal() {
     const modal = document.getElementById('addQAModal');
@@ -185,7 +191,7 @@ function handleAddQA() {
     }
 
     closeModal();
-    renderQA();
+    refreshCurrentView();
 }
 
 // === RENDERING ===
@@ -268,7 +274,7 @@ function createQAElement(qa) {
         if (confirm(`Bạn có chắc muốn xóa câu hỏi này?\n\n"${qa.question}"`)) {
             deleteQA(qa.id);
             showToast('✓ Xóa câu hỏi thành công!', 'success');
-            renderQA();
+            refreshCurrentView();
         }
     });
 
@@ -341,6 +347,7 @@ function saveEditedAnswer(item, qa) {
 
     exitEditMode(item);
     showToast('💾 Câu trả lời đã được lưu!', 'success');
+    refreshCurrentView();
 }
 
 // === UTILITIES ===
