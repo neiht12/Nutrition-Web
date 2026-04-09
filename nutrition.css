@@ -87,14 +87,91 @@ body.nutrition-page {
 /* --- NƯỚC BIỂN --- */
 .ocean-container {
     position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60vh;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.25), transparent 60%),
+        linear-gradient(to bottom, #6ad4dd, #3cbac4, #1f8fa3, #0f5c75);
+    z-index: -2;
+    overflow: hidden;
+}
+
+/* Sóng phía trên */
+.ocean-container::before {
+    content: '';
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(135deg, #76cfff 0%, #3ba7e1 100%);
-    z-index: -1;
-    /* Luôn nằm dưới cùng */
-    overflow: hidden;
+    width: 100%;
+    height: 100px;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0,30 Q150,0 300,30 T600,30 T900,30 T1200,30 L1200,60 L0,60 Z' fill='rgba(255,255,255,0.5)'/%3E%3C/svg%3E");
+
+    background-repeat: repeat-x;
+    background-size: 300px 60px;
+
+    animation:
+        waveMove 6s linear infinite,
+        waveFloat 3s ease-in-out infinite;
+
+    opacity: 0.9;
+}
+
+/* Sóng phía dưới */
+.ocean-container::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0,30 Q150,60 300,30 T600,30 T900,30 T1200,30 L1200,60 L0,60 Z' fill='rgba(255,255,255,0.3)'/%3E%3C/svg%3E");
+
+    background-repeat: repeat-x;
+    background-size: 300px 60px;
+
+    animation:
+        waveMoveReverse 10s linear infinite,
+        waveFloat 4s ease-in-out infinite;
+
+    opacity: 0.7;
+}
+
+/* Animation sóng trên di chuyển */
+@keyframes waveMove {
+    from {
+        background-position-x: 0;
+    }
+
+    to {
+        background-position-x: 300px;
+    }
+}
+
+/* Animation sóng dưới di chuyển (ngược chiều) */
+@keyframes waveMoveReverse {
+    from {
+        background-position-x: 0;
+    }
+
+    to {
+        background-position-x: -300px;
+    }
+}
+
+@keyframes waveFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
 }
 
 .water-sparkle-overlay {
@@ -127,6 +204,18 @@ body.nutrition-page {
         transform: rotate(360deg);
         opacity: 0.3;
     }
+}
+
+/* --- BẦU TRỜI --- */
+.sky-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 40vh;
+    background: linear-gradient(to bottom, #8fdff3, #e0f7ff);
+    z-index: 0;
+    /* Nằm bên trên cùng: dưới ocean, dưới đảo, dưới tiêu đề */
 }
 
 /* --- TIÊU ĐỀ 3D TRÒN TRỊA & CHUYỂN ĐỘNG --- */
@@ -224,40 +313,137 @@ body.nutrition-page {
 }
 
 /* --- NÚT QUAY VỀ TRANG CHỦ (KHUNG TRÒN) --- */
+/* --- NÚT QUAY VỀ (PHÓNG TO & TRÒN TRỊA) --- */
 .back-home-btn {
     position: fixed;
-    /* Giữ cố định ở góc màn hình */
     top: 30px;
     left: 30px;
-    width: 60px;
-    height: 60px;
+
+    /* Tăng kích thước nút to ra (80px thay vì 60px) */
+    width: 80px;
+    height: 80px;
+
     background-color: white;
     border-radius: 50%;
-    /* Tạo khung tròn */
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: none;
     z-index: 200;
-    /* Đảm bảo nằm trên cùng */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    /* Đổ bóng nhẹ */
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* Tăng độ bóng đổ để nhìn nút "nổi" và tròn như một khối cầu */
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.15),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.05);
+    /* Bóng đổ ngược bên trong tạo độ khối */
+
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .back-home-btn:hover {
-    transform: scale(1.2);
-    /* Phóng to nhẹ khi di chuột vào */
-    background-color: #f8f9fa;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1) rotate(-10deg);
+    /* Hơi nghiêng nhẹ khi di chuột cho sinh động */
+    background-color: #f0f9ff;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 }
 
 .arrow-icon {
-    font-size: 32px;
+    /* Cho mũi tên to ra và đậm hơn */
+    font-size: 48px;
     color: #0069d9;
-    /* Màu xanh đậm tông xuyệt tông với chữ ĐẢO */
-    font-weight: bold;
+
+    /* font-weight 900 giúp mũi tên trông "mập" và tròn hơn */
+    font-weight: 900;
+
     line-height: 1;
-    margin-top: -4px;
-    /* Căn chỉnh vị trí mũi tên vào giữa tâm tròn */
+    margin-top: -6px;
+    /* Căn chỉnh lại tâm */
+    transition: transform 0.3s ease;
+}
+
+.back-home-btn:hover .arrow-icon {
+    transform: translateX(-5px);
+    /* Mũi tên khẽ rung rinh sang trái khi hover */
+}
+
+/* --- ĐỊNH DẠNG HÌNH ẢNH CÁ --- */
+.fish-img {
+    position: absolute;
+    width: 120px;
+    /* Điều chỉnh kích thước cá */
+    height: auto;
+    z-index: 2;
+
+    /* MẸO: Xóa nền trắng của ảnh JPG/PNG để hiện màu nước phía sau */
+    mix-blend-mode: multiply;
+
+    /* Gán hiệu ứng bơi */
+    animation: fish-swim 10s infinite ease-in-out;
+    opacity: 0.9;
+}
+
+/* Vị trí xuất phát khác nhau cho từng con */
+.fish-1 {
+    top: 70%;
+    left: 5%;
+    animation-duration: 12s;
+}
+
+.fish-2 {
+    top: 60%;
+    right: 15%;
+    animation-duration: 15s;
+    animation-delay: 2s;
+}
+
+.fish-3 {
+    top: 90%;
+    left: 10%;
+    animation-duration: 10s;
+    animation-delay: 5s;
+}
+
+.fish-4 {
+    top: 80%;
+    right: 5%;
+    animation-duration: 14s;
+    animation-delay: 3s;
+}
+
+.fish-5 {
+    top: 65%;
+    left: 20%;
+    animation-duration: 11s;
+    animation-delay: 1s;
+}
+
+.fish-6 {
+    top: 75%;
+    right: 25%;
+    animation-duration: 13s;
+    animation-delay: 4s;
+}
+
+/* --- HIỆU ỨNG CÁ BƠI TỰ NHIÊN --- */
+@keyframes fish-swim {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scaleX(1);
+    }
+
+    45% {
+        transform: translate(150px, -30px) rotate(5deg) scaleX(1);
+    }
+
+    50% {
+        /* Quay đầu cá khi bơi ngược lại */
+        transform: translate(155px, -30px) rotate(5deg) scaleX(-1);
+    }
+
+    95% {
+        transform: translate(10px, 10px) rotate(-5deg) scaleX(-1);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0deg) scaleX(1);
+    }
 }

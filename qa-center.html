@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đảo Giải Đáp</title>
+    <link rel="stylesheet" href="qa-center.css">
+</head>
+
+<body>
+
+    <!-- QA Center Container -->
+    <div class="qa-container">
+        <a href="giaidap.html" class="back-home-btn" title="Quay lại">
+            <span class="arrow-icon">←</span>
+        </a>
+
+        <div class="qa-header">
+            <h1>🤔 Đảo Giải Đáp</h1>
+            <p class="qa-subtitle">Câu hỏi & Câu trả lời về sức khỏe</p>
+            <button class="btn-add-qa" id="openAddQABtn">+ Thêm Câu Hỏi Mới</button>
+        </div>
+
+        <!-- Filter & Search -->
+        <div class="qa-controls">
+            <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm câu hỏi..." class="search-box">
+            <select id="categoryFilter" class="category-filter">
+                <option value="">📂 Tất cả danh mục</option>
+                <option value="nutrition">🥗 Dinh dưỡng</option>
+                <option value="exam-prep">📚 Chuẩn bị thi</option>
+                <option value="health">❤️ Sức khỏe</option>
+                <option value="other">💡 Khác</option>
+            </select>
+        </div>
+
+        <!-- QA List -->
+        <div class="qa-list" id="qaList">
+            <!-- Câu hỏi sẽ render ở đây -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <span class="empty-icon">📭</span>
+            <p>Chưa có câu hỏi nào. Hãy thêm câu hỏi đầu tiên!</p>
+        </div>
+    </div>
+
+    <!-- Modal: Thêm/Chỉnh sửa Câu Hỏi -->
+    <div class="modal" id="addQAModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">✨ Thêm Câu Hỏi Mới</h2>
+                <button class="btn-close" id="closeModalBtn">×</button>
+            </div>
+
+            <form id="qaForm">
+                <div class="form-group">
+                    <label for="qaQuestion">❓ Câu hỏi:</label>
+                    <input type="text" id="qaQuestion" placeholder="VD: Tác hại của mì tôm là gì?" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="qaAnswer">💬 Câu trả lời:</label>
+                    <textarea id="qaAnswer" placeholder="Viết câu trả lời chi tiết..." rows="6" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="qaCategory">📂 Danh mục:</label>
+                    <select id="qaCategory" required>
+                        <option value="nutrition">🥗 Dinh dưỡng</option>
+                        <option value="exam-prep">📚 Chuẩn bị thi</option>
+                        <option value="health">❤️ Sức khỏe</option>
+                        <option value="other">💡 Khác</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelQABtn">Hủy</button>
+                    <button type="submit" class="btn-submit">Lưu Câu Hỏi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="qa-center.js"></script>
+</body>
+
+</html>
