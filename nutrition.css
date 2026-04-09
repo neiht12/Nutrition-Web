@@ -18,7 +18,7 @@ body.nutrition-page {
 /* --- KHUNG ĐẢO --- */
 .nutrition-container {
     position: relative;
-    width: 90%;
+    width: 100%;
     max-width: 1200px;
     display: flex;
     justify-content: center;
@@ -33,6 +33,82 @@ body.nutrition-page {
     display: block;
     filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
     /* Tạo bóng đổ cho đảo */
+}
+
+.board-text1 {
+    position: absolute;
+    top: 35%;
+    /* chỉnh để khớp bảng trắng */
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 28px;
+    font-weight: bold;
+    color: #5a3e1b;
+
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.board-text2 {
+    position: absolute;
+    bottom: 15%;
+    /* chỉnh để khớp bảng trắng */
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 32px;
+    color: #5a3e1b;
+
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.board-text1:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    /* phóng to */
+    font-weight: bold;
+    /* đậm hơn */
+    color: #5a3e1b;
+    /* đậm màu hơn */
+}
+
+.board-text3 {
+    position: absolute;
+    top: 38%;
+    /* chỉnh để khớp bảng trắng */
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 28px;
+    font-weight: bold;
+    color: #5a3e1b;
+
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.board-text3:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    /* phóng to */
+    font-weight: bold;
+    /* đậm hơn */
+    color: #5a3e1b;
+    /* đậm màu hơn */
+}
+
+.board-text4 {
+    position: absolute;
+    bottom: 26%;
+    /* chỉnh để khớp bảng trắng */
+    left: 51%;
+    transform: translate(-50%, -50%);
+
+    font-size: 32px;
+    color: #5a3e1b;
+
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* --- VÙNG BẤM (HOTSPOTS) --- */

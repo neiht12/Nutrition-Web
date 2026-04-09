@@ -19,8 +19,8 @@ body {
 /* === BACK BUTTON === */
 .back-home-btn {
     position: fixed;
-    top: 7px;
-    left: 10px;
+    top: 20px;
+    left: 20px;
     width: 50px;
     height: 50px;
     background: rgba(255, 255, 255, 0.9);

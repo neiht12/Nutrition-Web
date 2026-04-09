@@ -3,82 +3,87 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Nhóm Rau Củ - Đảo Dinh Dưỡng</title>
-    <link rel="stylesheet" href="nutrition.css">
-    <link rel="stylesheet" href="cards.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhóm Rau củ</title>
+    <link rel="stylesheet" href="nutrition-food.css">
 </head>
 
-<body class="nutrition-page">
-    <div class="ocean-container">
-        <div class="water-sparkle-overlay"></div>
-    </div>
-    <div class="card-container">
-        <h1>Nhóm Rau Củ</h1>
-        <div id="card-list">
-            <div class="card" onclick="showDetail(this)">
-                <img src="https://via.placeholder.com/100" alt="Cà rốt">
-                <div class="name">Cà rốt</div>
-                <span class="edit-icon" onclick="event.stopPropagation(); editCard(this.parentElement)">✏️</span>
-            </div>
-            <div class="card" onclick="showDetail(this)">
-                <img src="https://via.placeholder.com/100" alt="Bông cải">
-                <div class="name">Bông cải</div>
-                <span class="edit-icon" onclick="event.stopPropagation(); editCard(this.parentElement)">✏️</span>
-            </div>
-            <div class="card" onclick="showDetail(this)">
-                <img src="https://via.placeholder.com/100" alt="Khoai tây">
-                <div class="name">Khoai tây</div>
-                <span class="edit-icon" onclick="event.stopPropagation(); editCard(this.parentElement)">✏️</span>
-            </div>
-        </div>
-        <a href="dinhduong.html" style="display: block; margin-top: 20px; text-align: center;">Quay lại Đảo Dinh
-            Dưỡng</a>
-    </div>
-    <div id="edit-form" class="edit-form">
-        <h3>Sửa Card</h3>
-        <label for="card-select" style="display: block; margin-bottom: 5px; font-weight: bold;">Chọn card để
-            sửa:</label>
-        <select id="card-select" onchange="selectCardToEdit()"
-            style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ddd;">
-            <option value="">-- Chọn card để sửa --</option>
-        </select>
-        <button onclick="addNewCardFromForm()"
-            style="margin-bottom: 10px; padding: 8px 15px; background: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer; width: 100%;">Thêm
-            Card Mới</button>
-        <input type="text" id="edit-name" placeholder="Tên món ăn" disabled>
-        <input type="file" id="edit-image" accept="image/*" disabled>
-        <textarea id="edit-info" placeholder="Thông tin dinh dưỡng" disabled></textarea>
-        <button onclick="saveEdit()" disabled>Lưu</button>
-        <button onclick="cancelEdit()">Hủy</button>
-    </div>
-    <div id="detail-modal" class="detail-modal">
-        <div class="detail-card">
-            <!-- Nội dung sẽ được điền bởi JS -->
-        </div>
-    </div>
-    <script src="cards.js"></script>
-    <script>
-        // 初始化所有卡片
-        function initializeCards() {
-            const cards = document.querySelectorAll('#card-list .card');
-            cards.forEach((card) => {
-                // 确保每张卡片都有info元素
-                if (!card.querySelector('.info')) {
-                    const infoDiv = document.createElement('div');
-                    infoDiv.className = 'info';
-                    infoDiv.style.display = 'none';
-                    card.appendChild(infoDiv);
-                }
-            });
-            // 更新dropdown列表
-            updateCardSelect();
-        }
+<body data-category="rau-cu">
+    <a href="dinhduong.html" class="back-home-btn" title="Quay về đảo dinh dưỡng">
+        <span class="arrow-icon">←</span>
+    </a>
 
-        // 当页面加载完成时初始化
-        document.addEventListener('DOMContentLoaded', function () {
-            initializeCards();
-        });
-    </script>
+    <div class="nf-container">
+        <div class="nf-header">
+            <h1 id="pageTitle"></h1>
+            <div class="nf-header-actions">
+                <button class="btn-add-food" id="openAddFoodBtn" type="button">+ Thêm món</button>
+            </div>
+        </div>
+
+        <div class="nf-controls">
+            <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm..." class="nf-search">
+        </div>
+
+        <div class="nf-main">
+            <div class="nf-left">
+                <div class="nf-list" id="foodList"></div>
+                <div class="nf-empty" id="emptyState" style="display:none;">
+                    <span class="empty-icon">📭</span>
+                    <p>Chưa có món nào.</p>
+                </div>
+            </div>
+
+            <div class="nf-right">
+                <div class="nf-detail" id="foodDetail"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Thêm món -->
+    <div class="modal" id="addFoodModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="addFoodModalTitle">✨ Thêm món mới</h2>
+                <button class="btn-close" id="closeFoodModalBtn" type="button">×</button>
+            </div>
+
+            <form id="foodForm">
+                <input type="hidden" id="foodCategory" name="category" value="">
+
+                <div class="form-group">
+                    <label for="foodName">Tên món:</label>
+                    <input type="text" id="foodName" required placeholder="VD: Cà rốt">
+                </div>
+
+                <div class="form-group">
+                    <label for="foodImageUrl">Hình ảnh (URL):</label>
+                    <input type="text" id="foodImageUrl" placeholder="VD: https://...">
+                </div>
+
+                <div class="form-group">
+                    <label for="foodShortDesc">Mô tả ngắn:</label>
+                    <input type="text" id="foodShortDesc" required placeholder="VD: Giàu beta-carotene...">
+                </div>
+
+                <div class="form-group">
+                    <label for="foodDetailDesc">Giải thích chi tiết:</label>
+                    <textarea id="foodDetailDesc" required rows="6" placeholder="Viết mô tả chi tiết..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelFoodBtn">Hủy</button>
+                    <button type="submit" class="btn-submit">Lưu món</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="nutrition-food.js"></script>
 </body>
 
 </html>
+
