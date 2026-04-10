@@ -16,6 +16,30 @@ body {
     position: relative;
 }
 
+.main-title {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ffffff;
+    /* Màu chữ trắng */
+    text-shadow:
+        3px 3px 0px #2d5a27,
+        -1px -1px 0 #2d5a27,
+        1px -1px 0 #2d5a27,
+        -1px 1px 0 #2d5a27,
+        1px 1px 0 #2d5a27,
+        0px 10px 15px rgba(0, 0, 0, 0.2);
+    /* Viền xanh và bóng đổ 3D */
+    z-index: 100;
+    /* Nổi lên trên cùng */
+    margin: 0;
+    font-family: 'Segoe UI', 'Arial Rounded MT Bold', sans-serif;
+    letter-spacing: 2px;
+}
+
 /* --- KHUNG THẾ GIỚI (World) --- */
 .world {
     position: absolute;
