@@ -14,6 +14,12 @@
     </a>
     <!-- Dashboard Nhiệm vụ hàng ngày -->
     <div class="daily-tasks-container">
+        <div class="user-session-bar">
+            <div class="user-session-info">
+                <span id="currentUserLabel">Chưa đăng nhập</span>
+            </div>
+            <button class="btn-session" id="switchAccountBtn" type="button">Đổi tài khoản</button>
+        </div>
 
 
         <div class="tasks-header">
@@ -92,6 +98,14 @@
                 <span class="stat-value">0 / 3</span>
             </div>
         </div>
+
+        <div class="host-notification-panel" id="hostNotificationPanel" style="display: none;">
+            <div class="host-notification-header">
+                <h3>🔒 Thông báo kín cho Host</h3>
+                <button id="markAllReadBtn" type="button">Đánh dấu đã đọc</button>
+            </div>
+            <div id="hostNotificationList" class="host-notification-list"></div>
+        </div>
     </div>
 
     <!-- Modal thêm thử thách mới -->
@@ -133,7 +147,58 @@
         </div>
     </div>
 
-    <script src="daily-tasks.js"></script>
+    <!-- Modal đăng nhập -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔐 Tài Khoản Đảo Thử Thách</h3>
+            </div>
+            <div class="auth-switch">
+                <button type="button" id="showLoginBtn" class="auth-tab active">Đăng nhập</button>
+                <button type="button" id="showRegisterBtn" class="auth-tab">Đăng ký</button>
+            </div>
+
+            <form id="loginForm" class="auth-form active">
+                <div id="loginErrorMessage" class="auth-message auth-error" style="display: none;"></div>
+                <div id="loginSuccessMessage" class="auth-message auth-success" style="display: none;"></div>
+                <div class="form-group">
+                    <label for="loginUserId">Tên đăng nhập:</label>
+                    <input type="text" id="loginUserId" placeholder="VD: user01 hoặc host" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mật khẩu:</label>
+                    <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Đăng nhập</button>
+                </div>
+                <p class="login-hint">Demo host: host / host123</p>
+            </form>
+
+            <form id="registerForm" class="auth-form">
+                <div id="registerErrorMessage" class="auth-message auth-error" style="display: none;"></div>
+                <div id="registerSuccessMessage" class="auth-message auth-success" style="display: none;"></div>
+                <div class="form-group">
+                    <label for="registerDisplayName">Tên hiển thị:</label>
+                    <input type="text" id="registerDisplayName" placeholder="VD: Nguyễn Văn A" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerUserId">Tên đăng nhập:</label>
+                    <input type="text" id="registerUserId" placeholder="Tối thiểu 3 ký tự" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mật khẩu:</label>
+                    <input type="password" id="registerPassword" placeholder="Tối thiểu 4 ký tự" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Đăng ký</button>
+                </div>
+                <p class="login-hint">Đăng ký xong bạn cần đăng nhập để vào làm thử thách.</p>
+            </form>
+        </div>
+    </div>
+
+    <script src="daily-tasks-api.js"></script>
 </body>
 
 </html>

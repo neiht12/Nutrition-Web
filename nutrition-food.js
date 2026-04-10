@@ -1,6 +1,5 @@
-// Nutrition Food Board logic: CRUD bằng localStorage (không dùng API)
-
-const NFDB_KEY = 'nutritiondb_foods_v1';
+const LEGACY_NFDB_KEY = 'nutritiondb_foods_v1';
+const NUTRITION_MIGRATION_KEY = 'nutrition_food_db_migrated_v1';
 
 const CATEGORY_META = {
     'trai-cay': { label: 'Trái cây', emoji: '🍎' },
@@ -9,84 +8,6 @@ const CATEGORY_META = {
     'rau-cu': { label: 'Rau củ', emoji: '🥕' },
     'sua': { label: 'Sữa', emoji: '🥛' }
 };
-
-// Seed: 2 món mẫu mỗi nhóm (bạn có thể sửa/xóa/ thêm sau trong giao diện).
-const SEED_FOODS_RAW = [
-    {
-        category: 'trai-cay',
-        name: 'Chuối',
-        image_url: 'https://picsum.photos/seed/nutrition-banana/600/420',
-        short_desc: 'Giàu kali và chất xơ, hỗ trợ năng lượng và tiêu hóa.',
-        detail_desc: 'Chuối cung cấp kali giúp cơ thể hoạt động ổn định, đồng thời có chất xơ hỗ trợ hệ tiêu hóa. Có thể ăn như bữa phụ hoặc kèm với sữa chua.'
-    },
-    {
-        category: 'trai-cay',
-        name: 'Táo',
-        image_url: 'https://picsum.photos/seed/nutrition-apple/600/420',
-        short_desc: 'Chứa chất chống oxy hóa và chất xơ tốt cho sức khỏe.',
-        detail_desc: 'Táo có chất chống oxy hóa và chất xơ giúp hỗ trợ tim mạch và hệ tiêu hóa. Nên ăn cả vỏ khi phù hợp.'
-    },
-
-    {
-        category: 'dam',
-        name: 'Trứng',
-        image_url: 'https://picsum.photos/seed/nutrition-egg/600/420',
-        short_desc: 'Nguồn đạm chất lượng cao, hỗ trợ xây dựng cơ bắp.',
-        detail_desc: 'Trứng cung cấp protein (đạm) và nhiều vi chất. Có thể chế biến luộc, hấp, hoặc chiên ít dầu.'
-    },
-    {
-        category: 'dam',
-        name: 'Cá hồi',
-        image_url: 'https://picsum.photos/seed/nutrition-salmon/600/420',
-        short_desc: 'Giàu omega-3 tốt cho tim mạch và phát triển não.',
-        detail_desc: 'Cá hồi cung cấp omega-3 cùng protein. Nên ưu tiên cách chế biến ít dầu như nướng/hấp.'
-    },
-
-    {
-        category: 'tinh-bot',
-        name: 'Gạo lứt',
-        image_url: 'https://picsum.photos/seed/nutrition-brown-rice/600/420',
-        short_desc: 'Carb phức tạp, cho năng lượng bền và hỗ trợ tiêu hóa.',
-        detail_desc: 'Gạo lứt chứa tinh bột và chất xơ giúp năng lượng giải phóng chậm hơn, phù hợp cho học tập và vận động.'
-    },
-    {
-        category: 'tinh-bot',
-        name: 'Khoai lang',
-        image_url: 'https://picsum.photos/seed/nutrition-sweet-potato/600/420',
-        short_desc: 'Nhiều chất xơ và tinh bột dễ tiêu, tốt cho hệ tiêu hóa.',
-        detail_desc: 'Khoai lang cung cấp vitamin và chất xơ, có thể ăn nướng/hấp để hạn chế dầu mỡ.'
-    },
-
-    {
-        category: 'rau-cu',
-        name: 'Cà rốt',
-        image_url: 'https://picsum.photos/seed/nutrition-carrot/600/420',
-        short_desc: 'Giàu beta-carotene, tốt cho mắt và miễn dịch.',
-        detail_desc: 'Cà rốt cung cấp beta-carotene (tiền vitamin A), hỗ trợ sức khỏe mắt. Có thể ăn sống hoặc chế biến nhẹ.'
-    },
-    {
-        category: 'rau-cu',
-        name: 'Bông cải xanh',
-        image_url: 'https://picsum.photos/seed/nutrition-broccoli/600/420',
-        short_desc: 'Nhiều vitamin và chất chống oxy hóa, hỗ trợ cơ thể khỏe mạnh.',
-        detail_desc: 'Bông cải xanh giàu vitamin C và chất xơ. Nên luộc/hấp trong thời gian vừa để giữ dinh dưỡng.'
-    },
-
-    {
-        category: 'sua',
-        name: 'Sữa chua',
-        image_url: 'https://picsum.photos/seed/nutrition-yogurt/600/420',
-        short_desc: 'Hỗ trợ tiêu hóa nhờ lợi khuẩn (tùy loại).',
-        detail_desc: 'Sữa chua là lựa chọn tốt cho đường ruột (tùy sản phẩm có lợi khuẩn hay không). Có thể ăn kèm trái cây.'
-    },
-    {
-        category: 'sua',
-        name: 'Sữa tươi',
-        image_url: 'https://picsum.photos/seed/nutrition-milk/600/420',
-        short_desc: 'Nguồn canxi và protein, hỗ trợ xương và tăng trưởng.',
-        detail_desc: 'Sữa tươi cung cấp canxi và protein. Nên chọn loại phù hợp và uống với lượng vừa phải.'
-    }
-];
 
 let foodsDb = [];
 let filteredFoods = [];
@@ -110,44 +31,69 @@ function escapeHtml(text) {
         '"': '&quot;',
         "'": '&#039;'
     };
-    return str.replace(/[&<>"']/g, (m) => map[m]);
+    return str.replace(/[&<>"']/g, (char) => map[char]);
 }
 
-function normalizeText(v) {
-    return String(v ?? '').trim();
+function normalizeText(value) {
+    return String(value ?? '').trim();
 }
 
-function loadNutritionDB() {
-    const stored = localStorage.getItem(NFDB_KEY);
-    if (stored) {
-        try {
-            foodsDb = JSON.parse(stored);
-            return;
-        } catch (e) {
-            // Ignore corrupted storage and re-seed.
-        }
+async function apiRequest(path, options = {}) {
+    const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+    let response;
+
+    try {
+        response = await fetch(path, { ...options, headers });
+    } catch (_error) {
+        throw new Error('Không kết nối được server.');
     }
 
-    foodsDb = SEED_FOODS_RAW.map((f) => ({
-        id: generateFoodId(),
-        category: f.category,
-        name: f.name,
-        image_url: f.image_url,
-        short_desc: f.short_desc,
-        detail_desc: f.detail_desc,
-        createdAt: currentDate(),
-        modifiedAt: currentDate()
-    }));
+    const isJson = (response.headers.get('content-type') || '').includes('application/json');
+    const data = isJson ? await response.json().catch(() => ({})) : {};
 
-    saveNutritionDB();
+    if (!response.ok) {
+        throw new Error(data.error || `Yêu cầu thất bại (${response.status})`);
+    }
+
+    return data;
 }
 
-function saveNutritionDB() {
-    localStorage.setItem(NFDB_KEY, JSON.stringify(foodsDb));
+async function migrateLegacyNutritionIfNeeded() {
+    if (localStorage.getItem(NUTRITION_MIGRATION_KEY) === 'done') return;
+
+    const stored = localStorage.getItem(LEGACY_NFDB_KEY);
+    if (!stored) {
+        localStorage.setItem(NUTRITION_MIGRATION_KEY, 'done');
+        return;
+    }
+
+    let items;
+    try {
+        items = JSON.parse(stored);
+    } catch (_error) {
+        localStorage.setItem(NUTRITION_MIGRATION_KEY, 'done');
+        return;
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+        localStorage.setItem(NUTRITION_MIGRATION_KEY, 'done');
+        return;
+    }
+
+    await apiRequest('/api/nutrition-foods/import', {
+        method: 'POST',
+        body: JSON.stringify({ items })
+    });
+    localStorage.setItem(NUTRITION_MIGRATION_KEY, 'done');
 }
 
-function addFood(food) {
-    const record = {
+async function loadNutritionDB() {
+    const { items } = await apiRequest('/api/nutrition-foods');
+    foodsDb = Array.isArray(items) ? items : [];
+}
+
+async function addFood(food) {
+    const payload = {
         id: generateFoodId(),
         category: food.category,
         name: food.name,
@@ -158,52 +104,54 @@ function addFood(food) {
         modifiedAt: currentDate()
     };
 
-    foodsDb.unshift(record);
-    saveNutritionDB();
-    return record;
+    const { item } = await apiRequest('/api/nutrition-foods', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+    });
+    return item;
 }
 
-function updateFood(id, update) {
-    const idx = foodsDb.findIndex((f) => f.id === id);
-    if (idx === -1) return null;
-
-    foodsDb[idx] = {
-        ...foodsDb[idx],
-        ...update,
+async function updateFood(id, update, existingFood) {
+    const payload = {
+        category: update.category || existingFood.category,
+        name: update.name,
+        image_url: update.image_url || '',
+        short_desc: update.short_desc || '',
+        detail_desc: update.detail_desc || '',
+        createdAt: existingFood.createdAt,
         modifiedAt: currentDate()
     };
 
-    saveNutritionDB();
-    return foodsDb[idx];
+    const { item } = await apiRequest(`/api/nutrition-foods/${encodeURIComponent(id)}`, {
+        method: 'PUT',
+        body: JSON.stringify(payload)
+    });
+    return item;
 }
 
-function deleteFood(id) {
-    foodsDb = foodsDb.filter((f) => f.id !== id);
-    saveNutritionDB();
+async function deleteFood(id) {
+    await apiRequest(`/api/nutrition-foods/${encodeURIComponent(id)}`, { method: 'DELETE' });
 }
 
 function getFoodsByCategory(category) {
-    return foodsDb.filter((f) => f.category === category);
+    return foodsDb.filter((food) => food.category === category);
 }
 
 function matchesSearch(food, term) {
-    const t = term.toLowerCase();
+    const normalizedTerm = term.toLowerCase();
     const haystack = `${food.name} ${food.short_desc} ${food.detail_desc}`.toLowerCase();
-    return haystack.includes(t);
+    return haystack.includes(normalizedTerm);
 }
 
 function setImageWithFallback(imgEl, src, fallbackText) {
     const placeholderBase = 'https://placehold.co/220x160?text=';
     const listPlaceholderBase = 'https://placehold.co/120x120?text=';
-
-    // Decide placeholder size by class
     const isList = imgEl.classList.contains('food-thumb');
     const base = isList ? listPlaceholderBase : placeholderBase;
     const safeText = encodeURIComponent((fallbackText || 'Food').slice(0, 12));
-
     const finalSrc = normalizeText(src) || `${base}${safeText}`;
-    imgEl.src = finalSrc;
 
+    imgEl.src = finalSrc;
     imgEl.onerror = () => {
         imgEl.onerror = null;
         imgEl.src = `${base}${safeText}`;
@@ -240,12 +188,11 @@ function renderFoodList(category, term = '') {
     const searchTerm = term ? String(term).trim() : '';
 
     filteredFoods = searchTerm
-        ? foodsInCategory.filter((f) => matchesSearch(f, searchTerm))
+        ? foodsInCategory.filter((food) => matchesSearch(food, searchTerm))
         : foodsInCategory;
 
     if (!filteredFoods.length) {
         if (emptyEl) emptyEl.style.display = 'block';
-        // Khi lọc ra 0 kết quả thì reset chọn để detail không hiển thị sai món.
         selectedFoodId = null;
         editMode = false;
         renderFoodDetail(category);
@@ -253,8 +200,7 @@ function renderFoodList(category, term = '') {
     }
     if (emptyEl) emptyEl.style.display = 'none';
 
-    // Ensure selection is valid under current filter
-    if (!selectedFoodId || !filteredFoods.some((f) => f.id === selectedFoodId)) {
+    if (!selectedFoodId || !filteredFoods.some((food) => food.id === selectedFoodId)) {
         selectedFoodId = filteredFoods[0].id;
         editMode = false;
     }
@@ -305,7 +251,7 @@ function renderFoodDetail(category) {
     const detailEl = document.getElementById('foodDetail');
     if (!detailEl) return;
 
-    const food = foodsDb.find((f) => f.id === selectedFoodId && f.category === category) || null;
+    const food = foodsDb.find((entry) => entry.id === selectedFoodId && entry.category === category) || null;
 
     if (!food) {
         detailEl.innerHTML = `
@@ -339,32 +285,30 @@ function renderFoodDetail(category) {
         const imgEl = detailEl.querySelector('.food-detail-image');
         setImageWithFallback(imgEl, food.image_url, food.name);
 
-        const editBtn = document.getElementById('btnEditFood');
-        const deleteBtn = document.getElementById('btnDeleteFood');
-
-        editBtn.addEventListener('click', () => {
+        document.getElementById('btnEditFood').addEventListener('click', () => {
             editMode = true;
             renderFoodDetail(category);
         });
 
-        deleteBtn.addEventListener('click', () => {
+        document.getElementById('btnDeleteFood').addEventListener('click', async () => {
             const ok = confirm(`Bạn có chắc muốn xóa "${food.name}"?`);
             if (!ok) return;
 
-            deleteFood(food.id);
-            toast('✓ Xóa thành công!', 'success');
-
-            // Re-render with current filter/search input
-            const searchInput = document.getElementById('searchInput');
-            const term = searchInput ? searchInput.value : '';
-            renderFoodList(category, term);
-            renderFoodDetail(category);
+            try {
+                await deleteFood(food.id);
+                await loadNutritionDB();
+                toast('Xóa thành công!', 'success');
+                const term = document.getElementById('searchInput')?.value || '';
+                renderFoodList(category, term);
+                renderFoodDetail(category);
+            } catch (error) {
+                toast(error.message || 'Không xóa được món ăn.', 'error');
+            }
         });
 
         return;
     }
 
-    // Edit mode
     detailEl.innerHTML = `
         <form class="nf-form" id="editFoodForm">
             <div class="form-group">
@@ -373,7 +317,7 @@ function renderFoodDetail(category) {
             </div>
             <div class="form-group">
                 <label for="editFoodImageUrl">Hình ảnh (URL):</label>
-                <input type="text" id="editFoodImageUrl" value="${escapeHtml(food.image_url || '')}" placeholder="(tuỳ chọn)" />
+                <input type="text" id="editFoodImageUrl" value="${escapeHtml(food.image_url || '')}" placeholder="(tùy chọn)" />
             </div>
             <div class="form-group">
                 <label for="editFoodShortDesc">Mô tả ngắn:</label>
@@ -390,16 +334,14 @@ function renderFoodDetail(category) {
         </form>
     `;
 
-    const form = document.getElementById('editFoodForm');
-    const cancelBtn = document.getElementById('btnCancelEdit');
-
-    cancelBtn.addEventListener('click', () => {
+    document.getElementById('btnCancelEdit').addEventListener('click', () => {
         editMode = false;
         renderFoodDetail(category);
     });
 
-    form.addEventListener('submit', (e) => {
+    document.getElementById('editFoodForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+
         const name = normalizeText(document.getElementById('editFoodName').value);
         const image_url = normalizeText(document.getElementById('editFoodImageUrl').value);
         const short_desc = normalizeText(document.getElementById('editFoodShortDesc').value);
@@ -410,11 +352,16 @@ function renderFoodDetail(category) {
             return;
         }
 
-        updateFood(food.id, { name, image_url, short_desc, detail_desc });
-        editMode = false;
-        toast('✓ Cập nhật thành công!', 'success');
-        renderFoodList(category, document.getElementById('searchInput')?.value || '');
-        renderFoodDetail(category);
+        try {
+            await updateFood(food.id, { name, image_url, short_desc, detail_desc }, food);
+            await loadNutritionDB();
+            editMode = false;
+            toast('Cập nhật thành công!', 'success');
+            renderFoodList(category, document.getElementById('searchInput')?.value || '');
+            renderFoodDetail(category);
+        } catch (error) {
+            toast(error.message || 'Không cập nhật được món ăn.', 'error');
+        }
     });
 }
 
@@ -422,16 +369,13 @@ function openAddFoodModal(category) {
     const modal = document.getElementById('addFoodModal');
     if (!modal) return;
 
-    const form = document.getElementById('foodForm');
     const titleEl = document.getElementById('addFoodModalTitle');
     if (titleEl) {
         const meta = CATEGORY_META[category];
         titleEl.textContent = `✨ Thêm món mới (${meta ? meta.label : category})`;
     }
 
-    if (form) form.reset();
-
-    // Reset hidden category
+    document.getElementById('foodForm')?.reset();
     const hiddenCat = document.getElementById('foodCategory');
     if (hiddenCat) hiddenCat.value = category;
 
@@ -442,8 +386,9 @@ function openAddFoodModal(category) {
 function closeAddFoodModal() {
     const modal = document.getElementById('addFoodModal');
     if (!modal) return;
+
     modal.classList.remove('active');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'auto';
 }
 
 function initAddFood(category) {
@@ -453,22 +398,15 @@ function initAddFood(category) {
     const cancelBtn = document.getElementById('cancelFoodBtn');
     const form = document.getElementById('foodForm');
 
-    if (openBtn) {
-        openBtn.addEventListener('click', () => openAddFoodModal(category));
-    }
+    openBtn?.addEventListener('click', () => openAddFoodModal(category));
+    closeBtn?.addEventListener('click', closeAddFoodModal);
+    cancelBtn?.addEventListener('click', closeAddFoodModal);
 
-    if (closeBtn) closeBtn.addEventListener('click', closeAddFoodModal);
-    if (cancelBtn) cancelBtn.addEventListener('click', closeAddFoodModal);
+    modal?.addEventListener('click', (e) => {
+        if (e.target === modal) closeAddFoodModal();
+    });
 
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeAddFoodModal();
-        });
-    }
-
-    if (!form) return;
-
-    form.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const name = normalizeText(document.getElementById('foodName').value);
@@ -482,60 +420,57 @@ function initAddFood(category) {
             return;
         }
 
-        const created = addFood({
-            category: cat || category,
-            name,
-            image_url,
-            short_desc,
-            detail_desc
-        });
+        try {
+            const created = await addFood({
+                category: cat || category,
+                name,
+                image_url,
+                short_desc,
+                detail_desc
+            });
 
-        toast('✨ Thêm món thành công!', 'success');
-        closeAddFoodModal();
-
-        selectedFoodId = created.id;
-        editMode = false;
-
-        const searchInput = document.getElementById('searchInput');
-        renderFoodList(category, searchInput ? searchInput.value : '');
-        renderFoodDetail(category);
+            await loadNutritionDB();
+            toast('Thêm món thành công!', 'success');
+            closeAddFoodModal();
+            selectedFoodId = created.id;
+            editMode = false;
+            renderFoodList(category, document.getElementById('searchInput')?.value || '');
+            renderFoodDetail(category);
+        } catch (error) {
+            toast(error.message || 'Không thêm được món ăn.', 'error');
+        }
     });
 }
 
 function initEvents(category) {
     const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            renderFoodList(category, searchInput.value);
-            // Detail sẽ tự render lại theo selectedFoodId trong renderFoodList()
-            renderFoodDetail(category);
-        });
-    }
+    searchInput?.addEventListener('input', () => {
+        renderFoodList(category, searchInput.value);
+        renderFoodDetail(category);
+    });
 
     initAddFood(category);
 }
 
-function init() {
+async function init() {
     const category = normalizeText(document.body.dataset.category);
     const meta = CATEGORY_META[category];
     if (!meta) {
-        // fallback to first defined category
-        const firstCategory = Object.keys(CATEGORY_META)[0];
-        document.body.dataset.category = firstCategory;
+        document.body.dataset.category = Object.keys(CATEGORY_META)[0];
     }
 
     const realCategory = normalizeText(document.body.dataset.category);
-
     renderPageTitle(realCategory);
 
-    loadNutritionDB();
-
-    // Initial filtered/render
-    renderFoodList(realCategory, '');
-    renderFoodDetail(realCategory);
-
-    initEvents(realCategory);
+    try {
+        await migrateLegacyNutritionIfNeeded();
+        await loadNutritionDB();
+        renderFoodList(realCategory, '');
+        renderFoodDetail(realCategory);
+        initEvents(realCategory);
+    } catch (error) {
+        toast(error.message || 'Không tải được dữ liệu dinh dưỡng.', 'error');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);
-

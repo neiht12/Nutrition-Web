@@ -1,0 +1,29 @@
+{
+  "name": "teacher_web",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "dev:local": "npm run db:up && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neiht12/Nutrition-Web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neiht12/Nutrition-Web/issues"
+  },
+  "homepage": "https://github.com/neiht12/Nutrition-Web#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "pg": "^8.20.0"
+  }
+}
