@@ -2,7 +2,7 @@ const LEGACY_QADB_KEY = 'qadb_questions';
 const QA_MIGRATION_KEY = 'qa_center_db_migrated_v1';
 const CATEGORY_ICONS = {
     'nutrition': '🥗',
-    'exam_prep': '📚',
+    'exam-prep': '📚',
     'health': '❤️',
     'other': '💡'
 };
@@ -258,7 +258,7 @@ function createQAElement(qa) {
                 <p class="qa-answer-text">${escapeHtml(qa.answer)}</p>
             </div>
 
-            <div class="qa-answer-edit" style="display: none;">
+            <div class="qa-answer-edit">
                 <textarea class="qa-answer-textarea">${escapeHtml(qa.answer)}</textarea>
             </div>
 
