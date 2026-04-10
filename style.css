@@ -93,25 +93,25 @@ body {
 
 /* --- VỊ TRÍ TỪNG ĐẢO (DÀN TRẢI KHẮP MÀN HÌNH) --- */
 .island-1 {
-    top: 25%;
+    top: 35%;
     left: 10%;
     animation-delay: 0s;
 }
 
 .island-2 {
-    top: 18%;
+    top: 33%;
     left: 55%;
     animation-delay: 1s;
 }
 
 .island-3 {
-    top: 50%;
+    top: 60%;
     left: 35%;
     animation-delay: 2s;
 }
 
 .island-4 {
-    top: 45%;
+    top: 55%;
     left: 75%;
     animation-delay: 1.5s;
 }
