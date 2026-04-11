@@ -1133,7 +1133,7 @@ app.delete('/api/exercises/:id', asyncHandler(async (req, res) => {
     res.json({ ok: true });
 }));
 
-app.get('/api/tasks/hall-of-fame', authRequired, asyncHandler(async (req, res) => {
+app.get('/api/tasks/hall-of-fame', asyncHandler(async (req, res) => {
     const todayStr = new Date().toISOString().split('T')[0];
 
     // Tìm những user có date = hôm nay và đã hoàn thành (completed_celebration_shown = true)

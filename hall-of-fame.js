@@ -66,11 +66,7 @@ async function loadHallOfFame() {
         `).join('');
 
     } catch (error) {
-        if (error.message.includes('Phiên đăng nhập')) {
-            listEl.innerHTML = `<div style="text-align: center; color: red;">Vui lòng quay lại và đăng nhập để xem Bảng Vàng!</div>`;
-        } else {
-            listEl.innerHTML = `<div style="text-align: center; color: red;">Lỗi: ${error.message}</div>`;
-        }
+        listEl.innerHTML = `<div style="text-align: center; color: red;">Lỗi: ${error.message}</div>`;
         podiumEl.style.display = 'none';
     }
 }
