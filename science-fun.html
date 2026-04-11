@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gợi Ý Món Ăn Theo Ngày</title>
+    <link rel="stylesheet" href="science-fun.css">
+</head>
+
+<body>
+    <a href="batmi.html" class="back-home-btn" title="Quay lai">
+        <span class="arrow-icon">←</span>
+    </a>
+
+    <div class="science-container">
+        <header class="science-header">
+            <div>
+                <p class="science-kicker">Đảo bật mí</p>
+                <h1>🍽️ Gợi ý món ăn theo ngày</h1>
+                <p class="science-subtitle">Quản lý thực đơn hàng ngày với 3 bữa ăn, mỗi bữa 3-4 món ăn dinh dưỡng.</p>
+            </div>
+            <button class="btn-add-entry" id="openAddDayBtn" type="button">+ Thêm ngày mới</button>
+        </header>
+
+        <section class="science-stats" id="mealStats">
+            <div class="stat-card">
+                <span class="stat-label">Tổng số ngày</span>
+                <strong class="stat-value" id="totalDaysValue">0</strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Đang hiển thị</span>
+                <strong class="stat-value" id="filteredDaysValue">0</strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Cập nhật gần nhất</span>
+                <strong class="stat-value stat-small" id="lastUpdatedValue">--</strong>
+            </div>
+        </section>
+
+        <section class="science-controls">
+            <input type="text" id="searchInput" class="science-search" placeholder="Tìm theo tên ngày, món ăn...">
+            <select id="sortFilter" class="science-filter">
+                <option value="newest">Mới nhất</option>
+                <option value="oldest">Cũ nhất</option>
+                <option value="name">Theo tên</option>
+            </select>
+        </section>
+
+        <section class="science-main">
+            <div class="science-list-panel">
+                <div class="science-list" id="mealDaysList"></div>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <span class="empty-icon">🍽️</span>
+                    <p>Chưa có thực đơn nào. Hãy thêm ngày mới!</p>
+                </div>
+            </div>
+
+            <div class="science-detail" id="mealDayDetail">
+                <div class="science-detail-empty">
+                    <span class="empty-icon">🥗</span>
+                    <p>Chọn một ngày bên trái để xem chi tiết thực đơn.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal thêm/sửa ngày -->
+    <div class="modal" id="dayModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="dayModalTitle">Thêm ngày mới</h2>
+                <button class="btn-close" id="closeDayModalBtn" type="button">×</button>
+            </div>
+
+            <form id="dayForm" class="entry-form">
+                <div class="form-group">
+                    <label for="dayName">Tên ngày</label>
+                    <input type="text" id="dayName" placeholder="VD: Thứ Hai - Tuần 1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dayEmoji">Emoji</label>
+                    <input type="text" id="dayEmoji" placeholder="VD: 🌟" maxlength="4" value="🍽️">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelDayBtn">Hủy</button>
+                    <button type="submit" class="btn-submit">Lưu ngày</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal thêm/sửa món ăn -->
+    <div class="modal" id="dishModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="dishModalTitle">Thêm món ăn</h2>
+                <button class="btn-close" id="closeDishModalBtn" type="button">×</button>
+            </div>
+
+            <form id="dishForm" class="entry-form">
+                <div class="form-group">
+                    <label for="dishMeal">Bữa ăn</label>
+                    <select id="dishMeal" required>
+                        <option value="breakfast">Bữa sáng</option>
+                        <option value="lunch">Bữa trưa</option>
+                        <option value="dinner">Bữa tối</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dishName">Tên món ăn</label>
+                    <input type="text" id="dishName" placeholder="VD: Cơm gạo lứt" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dishEmoji">Emoji</label>
+                    <input type="text" id="dishEmoji" placeholder="VD: 🍚" maxlength="4" value="🍽️">
+                </div>
+
+                <div class="form-group">
+                    <label for="dishDesc">Mô tả ngắn</label>
+                    <textarea id="dishDesc" rows="3" placeholder="Mô tả dinh dưỡng, lợi ích..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelDishBtn">Hủy</button>
+                    <button type="submit" class="btn-submit">Lưu món ăn</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="science-fun.js"></script>
+</body>
+
+</html>

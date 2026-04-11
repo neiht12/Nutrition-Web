@@ -1,0 +1,708 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.55), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 230, 164, 0.45), transparent 24%),
+        linear-gradient(180deg, #dff6ff 0%, #96d8ff 48%, #6cb7e8 100%);
+    position: relative;
+    color: #17324d;
+}
+
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 999px;
+    filter: blur(4px);
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+body::before {
+    width: 220px;
+    height: 220px;
+    background: rgba(255, 255, 255, 0.22);
+    top: 80px;
+    right: 120px;
+}
+
+body::after {
+    width: 280px;
+    height: 280px;
+    background: rgba(254, 223, 116, 0.18);
+    bottom: 60px;
+    left: 60px;
+}
+
+.back-home-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid #17324d;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 20;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.back-home-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(18, 42, 66, 0.18);
+}
+
+.arrow-icon {
+    color: #17324d;
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+.science-container {
+    position: fixed;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    width: min(1180px, 94vw);
+    max-height: 88vh;
+    padding: 28px;
+    background: rgba(251, 254, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 28px;
+    box-shadow: 0 28px 70px rgba(16, 53, 85, 0.18);
+    backdrop-filter: blur(12px);
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.science-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: flex-start;
+    padding-bottom: 18px;
+    border-bottom: 3px solid #17324d;
+}
+
+.science-kicker {
+    margin: 0 0 6px;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    font-weight: 800;
+    color: #2f739b;
+}
+
+.science-header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    color: #17324d;
+}
+
+.science-subtitle {
+    margin: 10px 0 0;
+    max-width: 680px;
+    color: #587086;
+    line-height: 1.5;
+}
+
+.btn-add-entry {
+    border: none;
+    border-radius: 999px;
+    padding: 13px 22px;
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff8f52, #ff5f6d);
+    box-shadow: 0 12px 24px rgba(255, 95, 109, 0.28);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-add-entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 30px rgba(255, 95, 109, 0.35);
+}
+
+.science-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 20px 0 18px;
+}
+
+.stat-card {
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(229, 244, 255, 0.95));
+    border: 1px solid rgba(81, 138, 179, 0.16);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #5c7387;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    color: #17324d;
+    font-weight: 900;
+}
+
+.stat-small {
+    font-size: 1.05rem;
+}
+
+.science-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.science-search,
+.science-filter,
+.entry-form input,
+.entry-form select,
+.entry-form textarea,
+.detail-edit-form input,
+.detail-edit-form select,
+.detail-edit-form textarea {
+    border: 2px solid #d6e7f5;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font: inherit;
+    color: #17324d;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    background: #fff;
+}
+
+.science-search {
+    flex: 1;
+}
+
+.science-search:focus,
+.science-filter:focus,
+.entry-form input:focus,
+.entry-form select:focus,
+.entry-form textarea:focus,
+.detail-edit-form input:focus,
+.detail-edit-form select:focus,
+.detail-edit-form textarea:focus {
+    outline: none;
+    border-color: #54a5d8;
+    box-shadow: 0 0 0 4px rgba(84, 165, 216, 0.14);
+}
+
+.science-main {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.science-list-panel,
+.science-detail {
+    min-height: 460px;
+    border-radius: 22px;
+}
+
+.science-list-panel {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(72, 120, 156, 0.12);
+    padding: 14px;
+}
+
+.science-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.science-card {
+    border-radius: 18px;
+    border: 2px solid #e4eef6;
+    background: linear-gradient(135deg, #ffffff, #f5fbff);
+    padding: 16px;
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.science-card:hover {
+    transform: translateY(-2px);
+    border-color: #7cbde5;
+    box-shadow: 0 14px 26px rgba(22, 79, 121, 0.1);
+}
+
+.science-card.active {
+    border-color: #2f91cf;
+    box-shadow: 0 16px 30px rgba(47, 145, 207, 0.18);
+}
+
+.science-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.science-card-title-wrap {
+    min-width: 0;
+}
+
+.science-card-emoji {
+    font-size: 1.7rem;
+}
+
+.science-card-title {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #17324d;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.science-card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #e7f5ff;
+    color: #26648a;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.science-card-desc {
+    margin: 12px 0 0;
+    color: #577084;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.science-detail {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(233, 247, 255, 0.88));
+    border: 1px solid rgba(72, 120, 156, 0.15);
+    padding: 20px;
+}
+
+.science-detail-empty,
+.empty-state {
+    text-align: center;
+    padding: 52px 20px;
+    color: #678196;
+}
+
+.empty-icon {
+    display: block;
+    font-size: 3.4rem;
+    margin-bottom: 12px;
+}
+
+.detail-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.detail-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(24, 84, 124, 0.08);
+    color: #22597d;
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.detail-title {
+    margin: 14px 0 10px;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: #17324d;
+}
+
+.detail-short {
+    margin: 0;
+    color: #4e6578;
+    font-size: 1.02rem;
+    line-height: 1.6;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-save,
+.btn-cancel-edit,
+.btn-cancel,
+.btn-submit {
+    border: none;
+    border-radius: 12px;
+    padding: 11px 16px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #5ab7ff, #1f8fe0);
+    color: #fff;
+}
+
+.btn-delete {
+    background: rgba(255, 88, 88, 0.1);
+    color: #d94141;
+    border: 1px solid #ef8b8b;
+}
+
+.btn-save,
+.btn-submit {
+    background: linear-gradient(135deg, #44c486, #1ea866);
+    color: #fff;
+}
+
+.btn-cancel-edit,
+.btn-cancel {
+    background: #eef3f7;
+    color: #365063;
+}
+
+.btn-edit:hover,
+.btn-save:hover,
+.btn-submit:hover,
+.btn-cancel-edit:hover,
+.btn-cancel:hover,
+.btn-delete:hover {
+    transform: translateY(-1px);
+}
+
+.detail-sections {
+    display: grid;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.detail-block {
+    padding: 16px 18px;
+    background: rgba(255, 255, 255, 0.72);
+    border-radius: 18px;
+    border: 1px solid rgba(79, 137, 177, 0.14);
+}
+
+.detail-block h3 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: #1a5377;
+}
+
+.detail-block p {
+    margin: 0;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #22384c;
+}
+
+.detail-foot {
+    margin-top: 18px;
+    font-size: 0.88rem;
+    color: #648094;
+}
+
+.detail-edit-form,
+.entry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 170px;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #23445e;
+}
+
+.entry-form textarea,
+.detail-edit-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(12, 29, 44, 0.48);
+    justify-content: center;
+    align-items: center;
+    z-index: 40;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    width: min(700px, 92vw);
+    max-height: 84vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 26px 64px rgba(9, 28, 43, 0.28);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #d8e9f6;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #17324d;
+    font-size: 1.5rem;
+}
+
+.btn-close {
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: transparent;
+    color: #5c7387;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 60;
+    padding: 14px 20px;
+    border-radius: 14px;
+    background: #17324d;
+    color: #fff;
+    font-weight: 800;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success {
+    background: #198754;
+}
+
+.toast.error {
+    background: #dc3545;
+}
+
+.toast.info {
+    background: #22597d;
+}
+
+/* Meal sections styling */
+.meal-section {
+    margin-bottom: 8px;
+}
+
+.meal-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.meal-section-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #1a5377;
+}
+
+.btn-add-dish {
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(135deg, #44c486, #1ea866);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.btn-add-dish:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(30, 168, 102, 0.3);
+}
+
+.dishes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dish-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(79, 137, 177, 0.18);
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dish-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(22, 79, 121, 0.08);
+}
+
+.dish-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.dish-emoji {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.dish-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.dish-name {
+    display: block;
+    font-size: 1rem;
+    color: #17324d;
+    margin-bottom: 4px;
+}
+
+.dish-desc {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #577084;
+    line-height: 1.4;
+}
+
+.dish-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.btn-icon {
+    border: none;
+    background: transparent;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(84, 165, 216, 0.12);
+    transform: scale(1.1);
+}
+
+.empty-dishes {
+    text-align: center;
+    color: #678196;
+    font-style: italic;
+    padding: 20px;
+    margin: 0;
+}
+
+@media (max-width: 960px) {
+    body {
+        overflow: auto;
+    }
+
+    .science-container {
+        position: relative;
+        inset: auto;
+        transform: none;
+        width: auto;
+        max-height: none;
+        margin: 86px 14px 20px;
+    }
+
+    .science-main,
+    .science-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .science-header,
+    .science-controls,
+    .detail-head,
+    .form-grid,
+    .form-actions {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .science-list-panel,
+    .science-detail {
+        min-height: auto;
+    }
+}

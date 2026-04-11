@@ -147,6 +147,45 @@ const DEFAULT_NUTRITION_FOODS = [
     }
 ];
 
+const DEFAULT_SCIENCE_FUN = [
+    {
+        id: 'sf_rainbow',
+        category: 'weather',
+        emoji: '🌈',
+        title: 'Vi sao cau vong xuat hien sau mua?',
+        phenomenon: 'Anh nang chieu qua cac giot nuoc con lo lung trong khong khi.',
+        short_desc: 'Giot nuoc hoat dong nhu lang kinh ti hon, tach anh sang trang thanh nhieu mau.',
+        explanation: 'Khi anh sang Mat Troi di vao giot nuoc, no bi khuc xa, phan xa ben trong roi khuc xa lan nua khi di ra ngoai. Moi mau lech di mot goc khac nhau nen mat ta thay dai mau quen thuoc.',
+        fun_fact: 'Muon thay cau vong ro, ban thuong phai dung quay lung ve phia Mat Troi.',
+        createdAt: '2026-04-10',
+        modifiedAt: '2026-04-10'
+    },
+    {
+        id: 'sf_yawn',
+        category: 'human-body',
+        emoji: '😮',
+        title: 'Vi sao ngap lai de lay?',
+        phenomenon: 'Chi can thay nguoi khac ngap la minh cung muon ngap theo.',
+        short_desc: 'Nao bo co xu huong bat chuoc tin hieu xa hoi va trang thai co the cua nguoi xung quanh.',
+        explanation: 'Mot so nghien cuu cho rang ngap lay lien quan den kha nang dong cam va co che bat chuoc trong nao. Khi nhin thay hanh dong ngap, nao co the kich hoat mang luoi tuong tu nhu luc chinh minh ngap.',
+        fun_fact: 'Doc chu "ngap" hoac tuong tuong ai do dang ngap cung co the kich thich phan xa nay.',
+        createdAt: '2026-04-10',
+        modifiedAt: '2026-04-10'
+    },
+    {
+        id: 'sf_popcorn',
+        category: 'food-science',
+        emoji: '🍿',
+        title: 'Vi sao bap rang no bup mot cai?',
+        phenomenon: 'Hat bap bien thanh cuc bap trang xop khi gap nhiet do cao.',
+        short_desc: 'Hoi nuoc bi nhot trong hat bap tang ap suat cho den khi lop vo vo tung.',
+        explanation: 'Ben trong hat bap co mot it nuoc va tinh bot. Khi bi dun nong, nuoc chuyen thanh hoi, ap suat tang dan. Den mot muc du lon, lop vo nut ra va tinh bot nong phong len rat nhanh, tao nen tieng no.',
+        fun_fact: 'Khong phai hat bap nao cung no tot; do am ben trong phai du phu hop.',
+        createdAt: '2026-04-10',
+        modifiedAt: '2026-04-10'
+    }
+];
+
 function today() {
     return new Date().toISOString().split('T')[0];
 }
@@ -185,6 +224,21 @@ function normalizeFoodRecord(record) {
     };
 }
 
+function normalizeScienceFunRecord(record) {
+    return {
+        id: String(record.id),
+        category: String(record.category || 'other').trim() || 'other',
+        emoji: String(record.emoji || '🔬').trim() || '🔬',
+        title: String(record.title || '').trim(),
+        phenomenon: String(record.phenomenon || '').trim(),
+        short_desc: String(record.short_desc || '').trim(),
+        explanation: String(record.explanation || '').trim(),
+        fun_fact: String(record.fun_fact || '').trim(),
+        createdAt: String(record.createdAt || today()),
+        modifiedAt: String(record.modifiedAt || today())
+    };
+}
+
 function mapTaskStateRow(row) {
     if (!row) return null;
     return {
@@ -207,6 +261,41 @@ function mapNotificationRow(row) {
         timestamp: row.timestamp,
         isRead: Boolean(row.isRead)
     };
+}
+// --- MEAL PLANS HELPERS ---
+
+async function listMealPlans() {
+    const result = await query(
+        `SELECT id, name, emoji, meals_json, created_at AS "createdAt", modified_at AS "modifiedAt"
+         FROM meal_plans
+         ORDER BY modified_at DESC, created_at DESC, id DESC`
+    );
+    return result.rows.map(row => ({
+        ...row,
+        meals: row.meals_json || { breakfast: [], lunch: [], dinner: [] }
+    }));
+}
+
+async function createMealPlan(name, emoji, meals) {
+    const id = `mp_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+    const now = new Date().toISOString();
+    await query(
+        `INSERT INTO meal_plans (id, name, emoji, meals_json, created_at, modified_at)
+         VALUES ($1, $2, $3, $4::jsonb, $5, $6)`,
+        [id, name, emoji || '🍽️', JSON.stringify(meals), now, now]
+    );
+    return { id, name, emoji, meals, createdAt: now, modifiedAt: now };
+}
+
+async function updateMealPlan(id, name, emoji, meals) {
+    const now = new Date().toISOString();
+    await query(
+        `UPDATE meal_plans
+         SET name = $1, emoji = $2, meals_json = $3::jsonb, modified_at = $4
+         WHERE id = $5`,
+        [name, emoji || '🍽️', JSON.stringify(meals), now, id]
+    );
+    return { id, name, emoji, meals, modifiedAt: now };
 }
 
 async function query(text, params = []) {
@@ -292,6 +381,27 @@ async function initDb() {
             created_at TEXT NOT NULL,
             modified_at TEXT NOT NULL
         );
+
+        CREATE TABLE IF NOT EXISTS science_fun_entries (
+            id TEXT PRIMARY KEY,
+            category TEXT NOT NULL,
+            emoji TEXT NOT NULL DEFAULT '🔬',
+            title TEXT NOT NULL,
+            phenomenon TEXT NOT NULL DEFAULT '',
+            short_desc TEXT NOT NULL DEFAULT '',
+            explanation TEXT NOT NULL,
+            fun_fact TEXT NOT NULL DEFAULT '',
+            created_at TEXT NOT NULL,
+            modified_at TEXT NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS meal_plans (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        emoji TEXT NOT NULL DEFAULT '🍽️',
+        meals_json JSONB NOT NULL,
+        created_at TEXT NOT NULL,
+        modified_at TEXT NOT NULL
+    );
     `);
 
     for (const user of DEFAULT_USERS) {
@@ -325,6 +435,27 @@ async function initDb() {
                 [record.id, record.category, record.name, record.image_url, record.short_desc, record.detail_desc, record.createdAt, record.modifiedAt]
             );
         }
+    }
+
+    const scienceExists = await query('SELECT 1 FROM science_fun_entries LIMIT 1');
+    if (scienceExists.rowCount === 0) {
+        for (const record of DEFAULT_SCIENCE_FUN) {
+            await query(
+                `INSERT INTO science_fun_entries (id, category, emoji, title, phenomenon, short_desc, explanation, fun_fact, created_at, modified_at)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                 ON CONFLICT (id) DO NOTHING`,
+                [record.id, record.category, record.emoji, record.title, record.phenomenon, record.short_desc, record.explanation, record.fun_fact, record.createdAt, record.modifiedAt]
+            );
+        }
+    }
+    const mealPlansExist = await query('SELECT 1 FROM meal_plans LIMIT 1');
+    if (mealPlansExist.rowCount === 0) {
+        const defaultMeals = {
+            breakfast: [{ id: 'm1', name: 'Phở bò', emoji: '🍜', description: 'Giàu protein và năng lượng' }],
+            lunch: [{ id: 'm2', name: 'Cơm cá hồi áp chảo', emoji: '🐟', description: 'Omega-3 tốt cho trí não' }],
+            dinner: [{ id: 'm3', name: 'Salad ức gà', emoji: '🥗', description: 'Nhẹ bụng, dễ tiêu hóa' }]
+        };
+        await createMealPlan('Thực đơn mẫu dinh dưỡng', '🌟', defaultMeals);
     }
 }
 
@@ -383,6 +514,26 @@ async function listNutritionFoods(category) {
     const result = await query(
         `SELECT id, category, name, image_url, short_desc, detail_desc, created_at AS "createdAt", modified_at AS "modifiedAt"
          FROM nutrition_foods
+         ORDER BY category ASC, modified_at DESC, created_at DESC, id DESC`
+    );
+    return result.rows;
+}
+
+async function listScienceFunEntries(category) {
+    if (category) {
+        const result = await query(
+            `SELECT id, category, emoji, title, phenomenon, short_desc, explanation, fun_fact, created_at AS "createdAt", modified_at AS "modifiedAt"
+             FROM science_fun_entries
+             WHERE category = $1
+             ORDER BY modified_at DESC, created_at DESC, id DESC`,
+            [category]
+        );
+        return result.rows;
+    }
+
+    const result = await query(
+        `SELECT id, category, emoji, title, phenomenon, short_desc, explanation, fun_fact, created_at AS "createdAt", modified_at AS "modifiedAt"
+         FROM science_fun_entries
          ORDER BY category ASC, modified_at DESC, created_at DESC, id DESC`
     );
     return result.rows;
@@ -757,6 +908,175 @@ app.post('/api/nutrition-foods/import', asyncHandler(async (req, res) => {
     });
 
     res.json({ imported, items: await listNutritionFoods() });
+}));
+
+app.get('/api/science-fun', asyncHandler(async (req, res) => {
+    res.json({ items: await listScienceFunEntries(req.query.category) });
+}));
+
+app.post('/api/science-fun', asyncHandler(async (req, res) => {
+    const normalized = normalizeScienceFunRecord({
+        id: req.body?.id || `sf_${Date.now()}_${Math.floor(Math.random() * 10000)}`,
+        category: req.body?.category,
+        emoji: req.body?.emoji,
+        title: req.body?.title,
+        phenomenon: req.body?.phenomenon,
+        short_desc: req.body?.short_desc,
+        explanation: req.body?.explanation,
+        fun_fact: req.body?.fun_fact,
+        createdAt: req.body?.createdAt || today(),
+        modifiedAt: req.body?.modifiedAt || today()
+    });
+
+    if (!normalized.title || !normalized.short_desc || !normalized.explanation) {
+        return res.status(400).json({ error: 'Thieu tieu de, mo ta ngan hoac giai thich' });
+    }
+
+    await query(
+        `INSERT INTO science_fun_entries (id, category, emoji, title, phenomenon, short_desc, explanation, fun_fact, created_at, modified_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        [normalized.id, normalized.category, normalized.emoji, normalized.title, normalized.phenomenon, normalized.short_desc, normalized.explanation, normalized.fun_fact, normalized.createdAt, normalized.modifiedAt]
+    );
+
+    res.json({ item: normalized });
+}));
+
+app.put('/api/science-fun/:id', asyncHandler(async (req, res) => {
+    const existing = await query('SELECT created_at AS "createdAt" FROM science_fun_entries WHERE id = $1', [req.params.id]);
+    const existingRow = existing.rows[0];
+    if (!existingRow) {
+        return res.status(404).json({ error: 'Khong tim thay giai thich khoa hoc' });
+    }
+
+    const normalized = normalizeScienceFunRecord({
+        id: req.params.id,
+        category: req.body?.category,
+        emoji: req.body?.emoji,
+        title: req.body?.title,
+        phenomenon: req.body?.phenomenon,
+        short_desc: req.body?.short_desc,
+        explanation: req.body?.explanation,
+        fun_fact: req.body?.fun_fact,
+        createdAt: existingRow.createdAt,
+        modifiedAt: req.body?.modifiedAt || today()
+    });
+
+    if (!normalized.title || !normalized.short_desc || !normalized.explanation) {
+        return res.status(400).json({ error: 'Thieu tieu de, mo ta ngan hoac giai thich' });
+    }
+
+    await query(
+        `UPDATE science_fun_entries
+         SET category = $1, emoji = $2, title = $3, phenomenon = $4, short_desc = $5, explanation = $6, fun_fact = $7, modified_at = $8
+         WHERE id = $9`,
+        [normalized.category, normalized.emoji, normalized.title, normalized.phenomenon, normalized.short_desc, normalized.explanation, normalized.fun_fact, normalized.modifiedAt, req.params.id]
+    );
+
+    res.json({ item: normalized });
+}));
+
+app.delete('/api/science-fun/:id', asyncHandler(async (req, res) => {
+    await query('DELETE FROM science_fun_entries WHERE id = $1', [req.params.id]);
+    res.json({ ok: true });
+}));
+
+app.post('/api/science-fun/import', asyncHandler(async (req, res) => {
+    const items = Array.isArray(req.body?.items) ? req.body.items : [];
+    let imported = 0;
+
+    await withTransaction(async (client) => {
+        for (const item of items) {
+            if (!item?.id) continue;
+            const normalized = normalizeScienceFunRecord(item);
+            if (!normalized.title || !normalized.short_desc || !normalized.explanation) continue;
+
+            const insertResult = await client.query(
+                `INSERT INTO science_fun_entries (id, category, emoji, title, phenomenon, short_desc, explanation, fun_fact, created_at, modified_at)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                 ON CONFLICT (id) DO NOTHING`,
+                [normalized.id, normalized.category, normalized.emoji, normalized.title, normalized.phenomenon, normalized.short_desc, normalized.explanation, normalized.fun_fact, normalized.createdAt, normalized.modifiedAt]
+            );
+            imported += insertResult.rowCount;
+        }
+    });
+
+    res.json({ imported, items: await listScienceFunEntries() });
+}));
+// --- MEAL PLANS ROUTES ---
+
+app.get('/api/meal-plans', asyncHandler(async (_req, res) => {
+    res.json({ items: await listMealPlans() });
+}));
+
+app.post('/api/meal-plans', asyncHandler(async (req, res) => {
+    const { name, emoji, meals } = req.body || {};
+    if (!name || !meals) {
+        return res.status(400).json({ error: 'Thiếu tên hoặc danh sách món ăn' });
+    }
+
+    const normalizedMeals = {
+        breakfast: Array.isArray(meals.breakfast) ? meals.breakfast : [],
+        lunch: Array.isArray(meals.lunch) ? meals.lunch : [],
+        dinner: Array.isArray(meals.dinner) ? meals.dinner : []
+    };
+
+    const result = await createMealPlan(name, emoji, normalizedMeals);
+    res.json({ item: result });
+}));
+
+app.put('/api/meal-plans/:id', asyncHandler(async (req, res) => {
+    const { name, emoji, meals } = req.body || {};
+    if (!name || !meals) {
+        return res.status(400).json({ error: 'Thiếu tên hoặc danh sách món ăn' });
+    }
+
+    const normalizedMeals = {
+        breakfast: Array.isArray(meals.breakfast) ? meals.breakfast : [],
+        lunch: Array.isArray(meals.lunch) ? meals.lunch : [],
+        dinner: Array.isArray(meals.dinner) ? meals.dinner : []
+    };
+
+    const result = await updateMealPlan(req.params.id, name, emoji, normalizedMeals);
+    res.json({ item: result });
+}));
+
+app.delete('/api/meal-plans/:id', asyncHandler(async (req, res) => {
+    await query('DELETE FROM meal_plans WHERE id = $1', [req.params.id]);
+    res.json({ ok: true });
+}));
+
+app.post('/api/meal-plans/import', asyncHandler(async (req, res) => {
+    const items = Array.isArray(req.body?.items) ? req.body.items : [];
+    let imported = 0;
+
+    await withTransaction(async (client) => {
+        for (const item of items) {
+            if (!item?.id || !item?.name) continue;
+
+            const normalized = {
+                id: String(item.id),
+                name: String(item.name).trim(),
+                emoji: String(item.emoji || '🍽️').trim(),
+                meals: {
+                    breakfast: Array.isArray(item.meals?.breakfast) ? item.meals.breakfast : [],
+                    lunch: Array.isArray(item.meals?.lunch) ? item.meals.lunch : [],
+                    dinner: Array.isArray(item.meals?.dinner) ? item.meals.dinner : []
+                },
+                createdAt: String(item.createdAt || new Date().toISOString()),
+                modifiedAt: String(item.modifiedAt || new Date().toISOString())
+            };
+
+            const insertResult = await client.query(
+                `INSERT INTO meal_plans (id, name, emoji, meals_json, created_at, modified_at)
+                 VALUES ($1, $2, $3, $4::jsonb, $5, $6)
+                 ON CONFLICT (id) DO NOTHING`,
+                [normalized.id, normalized.name, normalized.emoji, JSON.stringify(normalized.meals), normalized.createdAt, normalized.modifiedAt]
+            );
+            imported += insertResult.rowCount;
+        }
+    });
+
+    res.json({ imported, items: await listMealPlans() });
 }));
 
 app.use(express.static(__dirname));

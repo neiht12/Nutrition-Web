@@ -139,6 +139,13 @@ body.nutrition-page {
     height: 40%;
 }
 
+.giai-dap {
+    top: 23%;
+    left: 42%;
+    width: 15%;
+    height: 15%;
+}
+
 .tinh-bot {
     bottom: 10%;
     left: 25%;
