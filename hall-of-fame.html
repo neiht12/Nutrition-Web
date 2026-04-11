@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Bảng Vàng Vinh Danh</title>
+    <link rel="stylesheet" href="daily-tasks.css">
+    <link rel="stylesheet" href="hall-of-fame.css">
+</head>
+
+<body>
+    <a href="daily-tasks.html" class="back-home-btn" title="Quay lại">
+        <span class="arrow-icon">←</span>
+    </a>
+
+    <div class="daily-tasks-container fame-container">
+        <div class="tasks-header" style="justify-content: center; border-bottom: none; margin-bottom: 10px;">
+            <h2 style="font-size: 2.5rem; text-align: center; color: #d84315;">🏆 Bảng Vàng Hôm Nay 🏆</h2>
+        </div>
+        <p class="fame-subtitle">Vinh danh những chiến binh đã hoàn thành xuất sắc 100% thử thách!</p>
+
+        <div class="podium-container" id="podiumContainer" style="display: none;">
+            <div class="podium-place top-2">
+                <div class="podium-avatar">🥈</div>
+                <div class="podium-name" id="top2Name">--</div>
+                <div class="podium-streak" id="top2Streak">--</div>
+                <div class="podium-block">2</div>
+            </div>
+            <div class="podium-place top-1">
+                <div class="crown">👑</div>
+                <div class="podium-avatar">🥇</div>
+                <div class="podium-name" id="top1Name">--</div>
+                <div class="podium-streak" id="top1Streak">--</div>
+                <div class="podium-block">1</div>
+            </div>
+            <div class="podium-place top-3">
+                <div class="podium-avatar">🥉</div>
+                <div class="podium-name" id="top3Name">--</div>
+                <div class="podium-streak" id="top3Streak">--</div>
+                <div class="podium-block">3</div>
+            </div>
+        </div>
+
+        <div class="fame-list-wrapper">
+            <h3 class="fame-list-title">Danh sách hoàn thành</h3>
+            <div id="fameList" class="fame-list">
+                <div style="text-align: center; color: #666; padding: 20px;">Đang tải dữ liệu...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="daily-tasks-api.js"></script>
+    <script src="hall-of-fame.js"></script>
+</body>
+
+</html>

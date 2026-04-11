@@ -1133,6 +1133,22 @@ app.delete('/api/exercises/:id', asyncHandler(async (req, res) => {
     res.json({ ok: true });
 }));
 
+app.get('/api/tasks/hall-of-fame', authRequired, asyncHandler(async (req, res) => {
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    // Tìm những user có date = hôm nay và đã hoàn thành (completed_celebration_shown = true)
+    const result = await query(
+        `SELECT u.id, u.display_name AS "displayName", uts.streak
+         FROM user_task_state uts
+         JOIN users u ON uts.user_id = u.id
+         WHERE uts.date = $1 AND uts.completed_celebration_shown = TRUE
+         ORDER BY uts.streak DESC, u.display_name ASC`,
+        [todayStr]
+    );
+
+    res.json({ hallOfFame: result.rows });
+}));
+
 app.use(express.static(__dirname));
 
 app.use((error, _req, res, _next) => {

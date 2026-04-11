@@ -52,16 +52,26 @@ body.nutrition-page {
 
 .board-text2 {
     position: absolute;
-    bottom: 15%;
+    bottom: 17%;
     /* chỉnh để khớp bảng trắng */
     left: 50%;
     transform: translate(-50%, -50%);
 
-    font-size: 32px;
+    font-size: 28px;
     color: #5a3e1b;
+    font-weight: bold;
 
     text-decoration: none;
     cursor: pointer;
+}
+
+.board-text2:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    /* phóng to */
+    font-weight: bold;
+    /* đậm hơn */
+    color: #5a3e1b;
+    /* đậm màu hơn */
 }
 
 .board-text1:hover {
