@@ -153,42 +153,34 @@ function initializeAuthEvents() {
     const showLoginBtn = document.getElementById('showLoginBtn');
     const showRegisterBtn = document.getElementById('showRegisterBtn');
 
-    loginForm.addEventListener('submit', async (e) => {
+    if (loginForm) loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         await handleLogin();
     });
-    registerForm.addEventListener('submit', async (e) => {
+    if (registerForm) registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         await handleRegister();
     });
 
-    switchAccountBtn.addEventListener('click', async () => {
+    if (switchAccountBtn) switchAccountBtn.addEventListener('click', async () => {
         if (authToken) {
-            try {
-                await apiRequest('/api/auth/logout', { method: 'POST' });
-            } catch (_e) {
-                // Ignore logout error.
-            }
+            try { await apiRequest('/api/auth/logout', { method: 'POST' }); } catch (_e) { }
         }
         forceRelogin();
     });
 
-    loginModal.addEventListener('click', (e) => {
+    if (loginModal) loginModal.addEventListener('click', (e) => {
         if (e.target === loginModal) closeLoginModal();
     });
 
-    markAllReadBtn.addEventListener('click', async () => {
+    if (markAllReadBtn) markAllReadBtn.addEventListener('click', async () => {
         if (!currentUser || currentUser.role !== 'host') return;
         await apiRequest('/api/host/notifications/read-all', { method: 'POST' });
         await renderHostNotifications();
     });
 
-    showLoginBtn.addEventListener('click', () => {
-        switchAuthView('login');
-    });
-    showRegisterBtn.addEventListener('click', () => {
-        switchAuthView('register');
-    });
+    if (showLoginBtn) showLoginBtn.addEventListener('click', () => { switchAuthView('login'); });
+    if (showRegisterBtn) showRegisterBtn.addEventListener('click', () => { switchAuthView('register'); });
 }
 
 async function handleLogin() {
@@ -274,6 +266,8 @@ async function initializeForCurrentUser() {
 
 function openLoginModal() {
     const modal = document.getElementById('loginModal');
+    if (!modal) return; // Thoát ngay nếu trang hiện tại không có modal đăng nhập
+
     switchAuthView('login');
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -282,6 +276,8 @@ function openLoginModal() {
 function closeLoginModal() {
     if (!currentUser) return;
     const modal = document.getElementById('loginModal');
+    if (!modal) return; // Thoát ngay nếu trang hiện tại không có modal đăng nhập
+
     modal.classList.remove('active');
     document.body.style.overflow = 'auto';
     document.getElementById('loginForm').reset();
@@ -332,15 +328,18 @@ function clearAuthMessages() {
 function updateUserSessionUI() {
     const currentUserLabel = document.getElementById('currentUserLabel');
     const hostNotificationPanel = document.getElementById('hostNotificationPanel');
+    const addTaskBtn = document.getElementById('openModalBtn');
+
     if (!currentUser) {
-        currentUserLabel.textContent = 'Chưa đăng nhập';
-        hostNotificationPanel.style.display = 'none';
+        if (currentUserLabel) currentUserLabel.textContent = 'Chưa đăng nhập';
+        if (hostNotificationPanel) hostNotificationPanel.style.display = 'none';
+        if (addTaskBtn) addTaskBtn.style.display = 'none';
         return;
     }
-    currentUserLabel.textContent = `Đang đăng nhập: ${currentUser.displayName} (${currentUser.id}) - ${currentUser.role}`;
-    hostNotificationPanel.style.display = currentUser.role === 'host' ? 'block' : 'none';
-    const addTaskBtn = document.getElementById('openModalBtn');
-    addTaskBtn.style.display = currentUser.role === 'host' ? 'inline-flex' : 'none';
+
+    if (currentUserLabel) currentUserLabel.textContent = `Đang đăng nhập: ${currentUser.displayName} (${currentUser.id}) - ${currentUser.role}`;
+    if (hostNotificationPanel) hostNotificationPanel.style.display = currentUser.role === 'host' ? 'block' : 'none';
+    if (addTaskBtn) addTaskBtn.style.display = currentUser.role === 'host' ? 'inline-flex' : 'none';
 }
 
 async function renderHostNotifications() {
@@ -429,16 +428,22 @@ function initializeModalEvents() {
     const cancelBtn = document.getElementById('cancelBtn');
     const form = document.getElementById('addTaskForm');
 
-    openBtn.addEventListener('click', () => openModal());
-    closeBtn.addEventListener('click', () => closeModal());
-    cancelBtn.addEventListener('click', () => closeModal());
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        await handleAddTask();
-    });
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
+    if (openBtn) openBtn.addEventListener('click', () => openModal());
+    if (closeBtn) closeBtn.addEventListener('click', () => closeModal());
+    if (cancelBtn) cancelBtn.addEventListener('click', () => closeModal());
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleAddTask();
+        });
+    }
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
 }
 
 function openModal() {
