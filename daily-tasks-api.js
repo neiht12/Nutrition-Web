@@ -623,6 +623,7 @@ function render() {
 
 function renderTasksGrid() {
     const tasksGrid = document.querySelector('.tasks-grid');
+    if (!tasksGrid) return;
     tasksGrid.innerHTML = '';
 
     Object.keys(TASKS_CONFIG).forEach(taskType => {
@@ -679,13 +680,19 @@ function renderTasksGrid() {
 }
 
 function updateStats() {
+    const statValueEl = document.querySelector('.stat-value');
+    if (!statValueEl) return;
+
     const completedTasks = Object.keys(TASKS_CONFIG).filter(t => isTaskCompleted(t)).length;
     const totalTasks = Object.keys(TASKS_CONFIG).length;
-    document.querySelector('.stat-value').textContent = `${completedTasks} / ${totalTasks}`;
+    statValueEl.textContent = `${completedTasks} / ${totalTasks}`;
 }
 
 function updateStreak() {
-    document.querySelector('.streak-count').textContent = tasksData.streak;
+    const streakCountEl = document.querySelector('.streak-count');
+    if (!streakCountEl) return;
+
+    streakCountEl.textContent = tasksData.streak;
 }
 
 async function checkCompletionCelebration() {
