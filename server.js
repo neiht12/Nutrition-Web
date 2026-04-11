@@ -298,6 +298,15 @@ async function updateMealPlan(id, name, emoji, meals) {
     return { id, name, emoji, meals, modifiedAt: now };
 }
 
+async function listExercises() {
+    const result = await query(
+        `SELECT id, name, category, emoji, video_url AS "videoUrl", image_url AS "imageUrl", description, created_at AS "createdAt", modified_at AS "modifiedAt"
+         FROM exercise_entries
+         ORDER BY modified_at DESC, id DESC`
+    );
+    return result.rows;
+}
+
 async function query(text, params = []) {
     return pool.query(text, params);
 }
@@ -399,6 +408,17 @@ async function initDb() {
         name TEXT NOT NULL,
         emoji TEXT NOT NULL DEFAULT '🍽️',
         meals_json JSONB NOT NULL,
+        created_at TEXT NOT NULL,
+        modified_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS exercise_entries (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        category TEXT NOT NULL,
+        emoji TEXT NOT NULL DEFAULT '💪',
+        video_url TEXT,
+        image_url TEXT,
+        description TEXT,
         created_at TEXT NOT NULL,
         modified_at TEXT NOT NULL
     );
@@ -1077,6 +1097,40 @@ app.post('/api/meal-plans/import', asyncHandler(async (req, res) => {
     });
 
     res.json({ imported, items: await listMealPlans() });
+}));
+app.get('/api/exercises', asyncHandler(async (_req, res) => {
+    res.json({ items: await listExercises() });
+}));
+
+app.post('/api/exercises', asyncHandler(async (req, res) => {
+    const { name, category, emoji, videoUrl, imageUrl, description } = req.body;
+    const id = `ex_${Date.now()}`;
+    const now = new Date().toISOString();
+
+    await query(
+        `INSERT INTO exercise_entries (id, name, category, emoji, video_url, image_url, description, created_at, modified_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+        [id, name, category, emoji || '💪', videoUrl, imageUrl, description, now, now]
+    );
+    res.json({ ok: true });
+}));
+
+app.put('/api/exercises/:id', asyncHandler(async (req, res) => {
+    const { name, category, emoji, videoUrl, imageUrl, description } = req.body;
+    const now = new Date().toISOString();
+
+    await query(
+        `UPDATE exercise_entries 
+         SET name = $1, category = $2, emoji = $3, video_url = $4, image_url = $5, description = $6, modified_at = $7
+         WHERE id = $8`,
+        [name, category, emoji, videoUrl, imageUrl, description, now, req.params.id]
+    );
+    res.json({ ok: true });
+}));
+
+app.delete('/api/exercises/:id', asyncHandler(async (req, res) => {
+    await query('DELETE FROM exercise_entries WHERE id = $1', [req.params.id]);
+    res.json({ ok: true });
 }));
 
 app.use(express.static(__dirname));

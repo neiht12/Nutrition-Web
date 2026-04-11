@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gợi Ý Bài Tập Thể Dục 💪</title>
+    <link rel="stylesheet" href="science-fun.css">
+</head>
+
+<body>
+    <a href="batmi.html" class="back-home-btn">←</a>
+
+    <div class="science-container">
+        <header class="science-header">
+            <div>
+                <p class="science-kicker">Sức khỏe là vàng</p>
+                <h1>💪 Gợi ý bài tập mỗi ngày</h1>
+                <p class="science-subtitle">Danh sách các bài tập hỗ trợ sức khỏe và vóc dáng.</p>
+            </div>
+            <button class="btn-add-entry" id="openAddExBtn">+ Thêm bài tập</button>
+        </header>
+
+        <section class="science-main">
+            <div class="science-list-panel">
+                <div class="science-list" id="exerciseList"></div>
+            </div>
+
+            <div class="science-detail" id="exerciseDetail">
+                <div class="science-detail-empty">Chọn một bài tập để xem hướng dẫn.</div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal" id="exModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Thêm bài tập mới</h2>
+            <form id="exForm" class="entry-form">
+                <input type="hidden" id="exId">
+                <div class="form-group">
+                    <label>Tên bài tập</label>
+                    <input type="text" id="exName" required>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nhóm cơ (Category)</label>
+                        <input type="text" id="exCategory" placeholder="VD: Toàn thân, Ngực...">
+                    </div>
+                    <div class="form-group">
+                        <label>Emoji</label>
+                        <input type="text" id="exEmoji" value="💪">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Link Video hướng dẫn</label>
+                    <input type="url" id="exVideo">
+                </div>
+                <div class="form-group">
+                    <label>Link Ảnh minh họa</label>
+                    <input type="url" id="exImage">
+                </div>
+                <div class="form-group">
+                    <label>Mô tả kỹ thuật</label>
+                    <textarea id="exDesc" rows="4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Hủy</button>
+                    <button type="submit" class="btn-submit">Lưu thông tin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="exercise-fun.js"></script>
+</body>
+
+</html>
