@@ -219,10 +219,10 @@ body.nutrition-page {
 }
 
 .dam {
-    top: 45%;
+    top: 35%;
     left: 45%;
-    width: 10%;
-    height: 10%;
+    width: 15%;
+    height: 19%;
 }
 
 /* --- NƯỚC BIỂN --- */
@@ -325,7 +325,6 @@ body.nutrition-page {
     background-size: 50px 50px;
     opacity: 0.5;
     animation: waterGlitter 15s linear infinite;
-    /* Gọi hiệu ứng mặt nước */
     pointer-events: none;
     /* Tránh click nhầm vào lớp nước */
 }
