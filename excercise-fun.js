@@ -263,10 +263,6 @@ function renderViewMode(detailEl, ex) {
                 <h2 class="detail-title">${escapeHtml(ex.emoji)} ${escapeHtml(ex.name)}</h2>
                 <p class="detail-short"><strong>Nhóm cơ:</strong> ${escapeHtml(ex.category)}</p>
             </div>
-            <div class="detail-actions">
-                <button class="btn-edit" id="btnEditEx" type="button">Sửa</button>
-                <button class="btn-delete" id="btnDeleteEx" type="button">Xóa</button>
-            </div>
         </div>
 
         <div class="detail-sections">
@@ -294,26 +290,26 @@ function renderViewMode(detailEl, ex) {
         </div>
     `;
 
-    document.getElementById('btnEditEx').addEventListener('click', () => {
-        detailEditMode = true;
-        renderDetail();
-    });
+    // document.getElementById('btnEditEx').addEventListener('click', () => {
+    //     detailEditMode = true;
+    //     renderDetail();
+    // });
 
-    document.getElementById('btnDeleteEx').addEventListener('click', async () => {
-        const ok = confirm(`Bạn có chắc muốn xóa bài tập này?\n\n"${ex.name}"`);
-        if (!ok) return;
+    // document.getElementById('btnDeleteEx').addEventListener('click', async () => {
+    //     const ok = confirm(`Bạn có chắc muốn xóa bài tập này?\n\n"${ex.name}"`);
+    //     if (!ok) return;
 
-        try {
-            await apiRequest(`/api/exercises/${encodeURIComponent(ex.id)}`, { method: 'DELETE' });
-            await loadExercises();
-            selectedExId = null;
-            detailEditMode = false;
-            refreshCurrentView();
-            toast('Đã xóa bài tập thành công.', 'success');
-        } catch (error) {
-            toast(error.message || 'Không xóa được bài tập.', 'error');
-        }
-    });
+    //     try {
+    //         await apiRequest(`/api/exercises/${encodeURIComponent(ex.id)}`, { method: 'DELETE' });
+    //         await loadExercises();
+    //         selectedExId = null;
+    //         detailEditMode = false;
+    //         refreshCurrentView();
+    //         toast('Đã xóa bài tập thành công.', 'success');
+    //     } catch (error) {
+    //         toast(error.message || 'Không xóa được bài tập.', 'error');
+    //     }
+    // });
 }
 
 function renderEditMode(detailEl, ex) {
