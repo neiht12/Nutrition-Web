@@ -460,7 +460,6 @@ body.nutrition-page {
     top: 30px;
     left: 30px;
 
-    /* Tăng kích thước nút to ra (80px thay vì 60px) */
     width: 80px;
     height: 80px;
 
@@ -471,51 +470,42 @@ body.nutrition-page {
     align-items: center;
     text-decoration: none;
     z-index: 200;
-
-    /* Tăng độ bóng đổ để nhìn nút "nổi" và tròn như một khối cầu */
     box-shadow:
         0 10px 25px rgba(0, 0, 0, 0.15),
         inset 0 -5px 10px rgba(0, 0, 0, 0.05);
-    /* Bóng đổ ngược bên trong tạo độ khối */
 
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .back-home-btn:hover {
     transform: scale(1.1) rotate(-10deg);
-    /* Hơi nghiêng nhẹ khi di chuột cho sinh động */
+    /* Hơi nghiêng nhẹ khi di chuột  */
     background-color: #f0f9ff;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 }
 
+.back-home-btn:hover .arrow-icon {
+    transform: translateX(-5px);
+}
+
 .arrow-icon {
-    /* Cho mũi tên to ra và đậm hơn */
     font-size: 48px;
     color: #0069d9;
 
-    /* font-weight 900 giúp mũi tên trông "mập" và tròn hơn */
     font-weight: 900;
 
     line-height: 1;
     margin-top: -6px;
-    /* Căn chỉnh lại tâm */
     transition: transform 0.3s ease;
 }
 
-.back-home-btn:hover .arrow-icon {
-    transform: translateX(-5px);
-    /* Mũi tên khẽ rung rinh sang trái khi hover */
-}
 
 /* --- ĐỊNH DẠNG HÌNH ẢNH CÁ --- */
 .fish-img {
     position: absolute;
     width: 120px;
-    /* Điều chỉnh kích thước cá */
     height: auto;
     z-index: 2;
-
-    /* MẸO: Xóa nền trắng của ảnh JPG/PNG để hiện màu nước phía sau */
     mix-blend-mode: multiply;
 
     /* Gán hiệu ứng bơi */
