@@ -99,7 +99,7 @@ function initializeEvents() {
     searchInput.addEventListener('input', refreshCurrentView);
     sortFilter.addEventListener('change', refreshCurrentView);
 
-    openDayBtn.addEventListener('click', openAddDayModal);
+    // openDayBtn.addEventListener('click', openAddDayModal);
     closeDayBtn.addEventListener('click', closeDayModal);
     cancelDayBtn.addEventListener('click', closeDayModal);
 
@@ -291,18 +291,11 @@ function renderDayView(detailEl, day) {
                 <button class="btn-delete" id="btnDeleteDay" type="button">Xóa ngày</button>
             </div>
         </div>
-
-        <div class="detail-sections">
-            ${renderMealSection('breakfast', 'Bữa sáng', meals.breakfast || [], day.id)}
-            ${renderMealSection('lunch', 'Bữa trưa', meals.lunch || [], day.id)}
-            ${renderMealSection('dinner', 'Bữa tối', meals.dinner || [], day.id)}
-        </div>
-
         <div class="detail-foot">
             Tạo: ${escapeHtml(day.createdAt)} · Sửa lần cuối: ${escapeHtml(day.modifiedAt)}
         </div>
     `;
-
+    /*
     document.getElementById('btnEditDay').addEventListener('click', () => {
         detailEditMode = true;
         renderMealDayDetail();
@@ -325,7 +318,7 @@ function renderDayView(detailEl, day) {
             toast(error.message || 'Không xóa được ngày này.', 'error');
         }
     });
-
+*/
     // Add event listeners for add dish buttons
     document.querySelectorAll('.btn-add-dish').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -366,19 +359,11 @@ function renderMealSection(mealType, mealLabel, dishes, dayId) {
                     ${dish.description ? `<p class="dish-desc">${escapeHtml(dish.description)}</p>` : ''}
                 </div>
             </div>
-            <div class="dish-actions">
-                <button class="btn-icon btn-edit-dish" data-dish-id="${escapeHtml(dish.id)}" data-meal="${mealType}" title="Sửa">✏️</button>
-                <button class="btn-icon btn-delete-dish" data-dish-id="${escapeHtml(dish.id)}" data-meal="${mealType}" title="Xóa">🗑️</button>
-            </div>
         </div>
     `).join('');
 
     return `
         <section class="detail-block meal-section">
-            <div class="meal-section-header">
-                <h3>${meta.emoji} ${mealLabel}</h3>
-                <button class="btn-add-dish" data-meal="${mealType}" type="button">+ Thêm món</button>
-            </div>
             <div class="dishes-list">
                 ${dishesHtml || '<p class="empty-dishes">Chưa có món ăn nào.</p>'}
             </div>
