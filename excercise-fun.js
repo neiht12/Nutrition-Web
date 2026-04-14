@@ -285,9 +285,6 @@ function renderViewMode(detailEl, ex) {
             ` : ''}
         </div>
 
-        <div class="detail-foot">
-            Cập nhật lần cuối: ${escapeHtml(new Date(ex.modifiedAt).toLocaleString('vi-VN'))}
-        </div>
     `;
 
     // document.getElementById('btnEditEx').addEventListener('click', () => {

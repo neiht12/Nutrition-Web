@@ -292,9 +292,6 @@ function renderDayView(detailEl, day) {
             ${renderMealSection('lunch', 'Bữa trưa', meals.lunch || [], day.id)}
             ${renderMealSection('dinner', 'Bữa tối', meals.dinner || [], day.id)}
         </div>
-        <div class="detail-foot">
-            Tạo: ${escapeHtml(day.createdAt)} · Sửa lần cuối: ${escapeHtml(day.modifiedAt)}
-        </div>
     `;
     /*
     document.getElementById('btnEditDay').addEventListener('click', () => {
