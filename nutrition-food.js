@@ -281,26 +281,26 @@ function renderFoodDetail(category) {
         const imgEl = detailEl.querySelector('.food-detail-image');
         setImageWithFallback(imgEl, food.image_url, food.name);
 
-        document.getElementById('btnEditFood').addEventListener('click', () => {
-            editMode = true;
-            renderFoodDetail(category);
-        });
+        // document.getElementById('btnEditFood').addEventListener('click', () => {
+        //     editMode = true;
+        //     renderFoodDetail(category);
+        // });
 
-        document.getElementById('btnDeleteFood').addEventListener('click', async () => {
-            const ok = confirm(`Bạn có chắc muốn xóa "${food.name}"?`);
-            if (!ok) return;
+        // document.getElementById('btnDeleteFood').addEventListener('click', async () => {
+        //     const ok = confirm(`Bạn có chắc muốn xóa "${food.name}"?`);
+        //     if (!ok) return;
 
-            try {
-                await deleteFood(food.id);
-                await loadNutritionDB();
-                toast('Xóa thành công!', 'success');
-                const term = document.getElementById('searchInput')?.value || '';
-                renderFoodList(category, term);
-                renderFoodDetail(category);
-            } catch (error) {
-                toast(error.message || 'Không xóa được món ăn.', 'error');
-            }
-        });
+        //     try {
+        //         await deleteFood(food.id);
+        //         await loadNutritionDB();
+        //         toast('Xóa thành công!', 'success');
+        //         const term = document.getElementById('searchInput')?.value || '';
+        //         renderFoodList(category, term);
+        //         renderFoodDetail(category);
+        //     } catch (error) {
+        //         toast(error.message || 'Không xóa được món ăn.', 'error');
+        //     }
+        // });
 
         return;
     }
