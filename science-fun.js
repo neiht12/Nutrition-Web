@@ -286,10 +286,6 @@ function renderDayView(detailEl, day) {
                 <div class="detail-eyebrow">🍽️ Thực đơn</div>
                 <h2 class="detail-title">${escapeHtml(day.emoji || '🍽️')} ${escapeHtml(day.name)}</h2>
             </div>
-            <div class="detail-actions">
-                <button class="btn-edit" id="btnEditDay" type="button">Sửa tên ngày</button>
-                <button class="btn-delete" id="btnDeleteDay" type="button">Xóa ngày</button>
-            </div>
         </div>
         <div class="detail-sections">
             ${renderMealSection('breakfast', 'Bữa sáng', meals.breakfast || [], day.id)}
