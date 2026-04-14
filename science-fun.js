@@ -291,6 +291,11 @@ function renderDayView(detailEl, day) {
                 <button class="btn-delete" id="btnDeleteDay" type="button">Xóa ngày</button>
             </div>
         </div>
+        <div class="detail-sections">
+            ${renderMealSection('breakfast', 'Bữa sáng', meals.breakfast || [], day.id)}
+            ${renderMealSection('lunch', 'Bữa trưa', meals.lunch || [], day.id)}
+            ${renderMealSection('dinner', 'Bữa tối', meals.dinner || [], day.id)}
+        </div>
         <div class="detail-foot">
             Tạo: ${escapeHtml(day.createdAt)} · Sửa lần cuối: ${escapeHtml(day.modifiedAt)}
         </div>
