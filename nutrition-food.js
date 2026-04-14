@@ -273,10 +273,6 @@ function renderFoodDetail(category) {
                 </div>
             </div>
             <div class="food-detail-text">${escapeHtml(food.detail_desc || '')}</div>
-            <div class="food-detail-actions">
-                <button class="btn-edit" id="btnEditFood">✏️ Chỉnh sửa</button>
-                <button class="btn-delete" id="btnDeleteFood">🗑️ Xóa</button>
-            </div>
             <div style="margin-top: 12px; font-size: 0.85rem; color: #999;">
                 <span>⏱️ Sửa lần cuối: ${escapeHtml(food.modifiedAt)}</span>
             </div>
