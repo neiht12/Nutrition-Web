@@ -194,8 +194,8 @@ function renderStats() {
     const totalEl = document.getElementById('totalDaysValue');
     const filteredEl = document.getElementById('filteredDaysValue');
 
-    if (totalEl) totalEl.textContent = String(exercisesDb.length);
-    if (filteredEl) filteredEl.textContent = String(filteredExercises.length);
+    if (totalEl) totalEl.textContent = String(mealPlansDb.length);
+    if (filteredEl) filteredEl.textContent = String(filteredMealPlans.length);
 }
 
 function renderMealDaysList() {
