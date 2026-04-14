@@ -193,19 +193,9 @@ function refreshCurrentView() {
 function renderStats() {
     const totalEl = document.getElementById('totalDaysValue');
     const filteredEl = document.getElementById('filteredDaysValue');
-    const updatedEl = document.getElementById('lastUpdatedValue');
 
-    totalEl.textContent = String(mealPlansDb.length);
-    filteredEl.textContent = String(filteredMealPlans.length);
-
-    if (!mealPlansDb.length) {
-        updatedEl.textContent = '--';
-        return;
-    }
-
-    const latest = [...mealPlansDb]
-        .sort((a, b) => String(b.modifiedAt).localeCompare(String(a.modifiedAt)))[0];
-    updatedEl.textContent = latest?.modifiedAt || '--';
+    if (totalEl) totalEl.textContent = String(exercisesDb.length);
+    if (filteredEl) filteredEl.textContent = String(filteredExercises.length);
 }
 
 function renderMealDaysList() {

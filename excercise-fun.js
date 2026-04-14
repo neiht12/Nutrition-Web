@@ -170,26 +170,11 @@ function refreshCurrentView() {
 // --- RENDER LOGIC ---
 
 function renderStats() {
-    const totalEl = document.getElementById('totalDaysValue'); // Tái sử dụng ID từ HTML cũ
+    const totalEl = document.getElementById('totalDaysValue');
     const filteredEl = document.getElementById('filteredDaysValue');
-    const updatedEl = document.getElementById('lastUpdatedValue');
 
-    if (totalEl) totalEl.textContent = String(exercisesDb.length);
-    if (filteredEl) filteredEl.textContent = String(filteredExercises.length);
-
-    if (!exercisesDb.length) {
-        if (updatedEl) updatedEl.textContent = '--';
-        return;
-    }
-
-    const latest = [...exercisesDb]
-        .sort((a, b) => String(b.modifiedAt).localeCompare(String(a.modifiedAt)))[0];
-
-    if (updatedEl) {
-        // Format hiển thị ngày giờ cho đẹp
-        const dateObj = new Date(latest.modifiedAt);
-        updatedEl.textContent = isNaN(dateObj.getTime()) ? latest.modifiedAt : dateObj.toLocaleDateString('vi-VN');
-    }
+    if (totalEl) totalEl.textContent = String(mealPlansDb.length);
+    if (filteredEl) filteredEl.textContent = String(filteredMealPlans.length);
 }
 
 function renderList() {
