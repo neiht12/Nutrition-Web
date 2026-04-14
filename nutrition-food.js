@@ -275,6 +275,7 @@ function renderFoodDetail(category) {
             <div class="food-detail-text">${escapeHtml(food.detail_desc || '')}</div>
         `;
 
+
         const imgEl = detailEl.querySelector('.food-detail-image');
         setImageWithFallback(imgEl, food.image_url, food.name);
 
