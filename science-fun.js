@@ -357,7 +357,10 @@ function renderMealSection(mealType, mealLabel, dishes, dayId) {
     const dishesHtml = dishes.map(dish => `
         <div class="dish-item">
             <div class="dish-info">
-                <span class="dish-emoji">${escapeHtml(dish.emoji || '🍽️')}</span>
+                ${dish.imageUrl
+            ? `<img src="${escapeHtml(dish.imageUrl)}" alt="${escapeHtml(dish.name)}" class="dish-image" onerror="this.outerHTML='<div class=\\'dish-image\\'>🍽️</div>'">`
+            : `<div class="dish-image">🍽️</div>`
+        }
                 <div class="dish-details">
                     <strong class="dish-name">${escapeHtml(dish.name)}</strong>
                     ${dish.description ? `<p class="dish-desc">${escapeHtml(dish.description)}</p>` : ''}
@@ -504,7 +507,7 @@ function openAddDishModal(dayId, mealType) {
     form.dataset.dayId = dayId;
     form.dataset.editDishId = '';
     document.getElementById('dishMeal').value = mealType;
-    document.getElementById('dishEmoji').value = '🍽️';
+    document.getElementById('dishImageUrl').value = '';
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -523,7 +526,7 @@ function openEditDishModal(dayId, mealType, dishId) {
     form.dataset.editDishId = dishId;
     document.getElementById('dishMeal').value = mealType;
     document.getElementById('dishName').value = dish.name;
-    document.getElementById('dishEmoji').value = dish.emoji || '🍽️';
+    document.getElementById('dishImageUrl').value = dish.imageUrl || '';
     document.getElementById('dishDesc').value = dish.description || '';
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -542,7 +545,7 @@ async function handleDishSubmit() {
     const editDishId = form.dataset.editDishId;
     const mealType = document.getElementById('dishMeal').value;
     const name = normalizeText(document.getElementById('dishName').value);
-    const emoji = normalizeText(document.getElementById('dishEmoji').value);
+    const imageUrl = normalizeText(document.getElementById('dishImageUrl').value);
     const description = normalizeText(document.getElementById('dishDesc').value);
 
     if (!name) {
@@ -566,7 +569,7 @@ async function handleDishSubmit() {
             meals[mealType][dishIndex] = {
                 ...meals[mealType][dishIndex],
                 name,
-                emoji: emoji || '🍽️',
+                imageUrl: imageUrl,
                 description
             };
         }
@@ -575,7 +578,7 @@ async function handleDishSubmit() {
         meals[mealType].push({
             id: generateId(),
             name,
-            emoji: emoji || '🍽️',
+            imageUrl: imageUrl,
             description
         });
     }

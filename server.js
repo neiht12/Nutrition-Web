@@ -471,9 +471,9 @@ async function initDb() {
     const mealPlansExist = await query('SELECT 1 FROM meal_plans LIMIT 1');
     if (mealPlansExist.rowCount === 0) {
         const defaultMeals = {
-            breakfast: [{ id: 'm1', name: 'Phở bò', emoji: '🍜', description: 'Giàu protein và năng lượng' }],
-            lunch: [{ id: 'm2', name: 'Cơm cá hồi áp chảo', emoji: '🐟', description: 'Omega-3 tốt cho trí não' }],
-            dinner: [{ id: 'm3', name: 'Salad ức gà', emoji: '🥗', description: 'Nhẹ bụng, dễ tiêu hóa' }]
+            breakfast: [{ id: 'm1', name: 'Phở bò', imageUrl: 'https://picsum.photos/seed/pho/200', description: 'Giàu protein và năng lượng' }],
+            lunch: [{ id: 'm2', name: 'Cơm cá hồi áp chảo', imageUrl: 'https://picsum.photos/seed/salmon/200', description: 'Omega-3 tốt cho trí não' }],
+            dinner: [{ id: 'm3', name: 'Salad ức gà', imageUrl: 'https://picsum.photos/seed/salad/200', description: 'Nhẹ bụng, dễ tiêu hóa' }]
         };
         await createMealPlan('Thực đơn mẫu dinh dưỡng', '🌟', defaultMeals);
     }
