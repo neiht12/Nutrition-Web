@@ -140,7 +140,7 @@ function initializeEventListeners() {
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
 
-    openBtn.addEventListener('click', () => openAddQAModal());
+    // openBtn.addEventListener('click', () => openAddQAModal());
     closeBtn.addEventListener('click', () => closeModal());
     cancelBtn.addEventListener('click', () => closeModal());
 
@@ -262,51 +262,44 @@ function createQAElement(qa) {
                 <textarea class="qa-answer-textarea">${escapeHtml(qa.answer)}</textarea>
             </div>
 
-            <div class="qa-actions">
-                <button class="btn-edit" data-action="edit">✏️ Chỉnh sửa</button>
-                <button class="btn-delete" data-action="delete">🗑️ Xóa</button>
-                <button class="btn-save" data-action="save" style="display: none;">💾 Lưu</button>
-                <button class="btn-cancel-edit" data-action="cancel" style="display: none;">❌ Hủy</button>
-            </div>
-
             <div style="margin-top: 10px; font-size: 0.85rem; color: #999;">
                 <span>Sửa: ${qa.modifiedAt}</span>
             </div>
         </div>
     `;
 
-    item.querySelector('.qa-question-section').addEventListener('click', () => {
-        item.classList.toggle('expanded');
-    });
+    // item.querySelector('.qa-question-section').addEventListener('click', () => {
+    //     item.classList.toggle('expanded');
+    // });
 
-    item.querySelector('[data-action="edit"]').addEventListener('click', (e) => {
-        e.stopPropagation();
-        enterEditMode(item);
-    });
+    // item.querySelector('[data-action="edit"]').addEventListener('click', (e) => {
+    //     e.stopPropagation();
+    //     enterEditMode(item);
+    // });
 
-    item.querySelector('[data-action="delete"]').addEventListener('click', async (e) => {
-        e.stopPropagation();
-        if (!confirm(`Bạn có chắc muốn xóa câu hỏi này?\n\n"${qa.question}"`)) return;
+    // item.querySelector('[data-action="delete"]').addEventListener('click', async (e) => {
+    //     e.stopPropagation();
+    //     if (!confirm(`Bạn có chắc muốn xóa câu hỏi này?\n\n"${qa.question}"`)) return;
 
-        try {
-            await deleteQA(qa.id);
-            await loadQADatabase();
-            refreshCurrentView();
-            showToast('Xóa câu hỏi thành công!', 'success');
-        } catch (error) {
-            showToast(error.message || 'Không xóa được câu hỏi.', 'error');
-        }
-    });
+    //     try {
+    //         await deleteQA(qa.id);
+    //         await loadQADatabase();
+    //         refreshCurrentView();
+    //         showToast('Xóa câu hỏi thành công!', 'success');
+    //     } catch (error) {
+    //         showToast(error.message || 'Không xóa được câu hỏi.', 'error');
+    //     }
+    // });
 
-    item.querySelector('[data-action="save"]').addEventListener('click', async (e) => {
-        e.stopPropagation();
-        await saveEditedAnswer(item, qa);
-    });
+    // item.querySelector('[data-action="save"]').addEventListener('click', async (e) => {
+    //     e.stopPropagation();
+    //     await saveEditedAnswer(item, qa);
+    // });
 
-    item.querySelector('[data-action="cancel"]').addEventListener('click', (e) => {
-        e.stopPropagation();
-        exitEditMode(item);
-    });
+    // item.querySelector('[data-action="cancel"]').addEventListener('click', (e) => {
+    //     e.stopPropagation();
+    //     exitEditMode(item);
+    // });
 
     return item;
 }
