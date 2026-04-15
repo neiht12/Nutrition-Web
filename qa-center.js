@@ -261,10 +261,6 @@ function createQAElement(qa) {
             <div class="qa-answer-edit">
                 <textarea class="qa-answer-textarea">${escapeHtml(qa.answer)}</textarea>
             </div>
-
-            <div style="margin-top: 10px; font-size: 0.85rem; color: #999;">
-                <span>Sửa: ${qa.modifiedAt}</span>
-            </div>
         </div>
     `;
 
