@@ -268,9 +268,9 @@ function createQAElement(qa) {
         </div>
     `;
 
-    // item.querySelector('.qa-question-section').addEventListener('click', () => {
-    //     item.classList.toggle('expanded');
-    // });
+    item.querySelector('.qa-question-section').addEventListener('click', () => {
+        item.classList.toggle('expanded');
+    });
 
     // item.querySelector('[data-action="edit"]').addEventListener('click', (e) => {
     //     e.stopPropagation();
